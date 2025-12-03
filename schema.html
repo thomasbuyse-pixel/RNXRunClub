@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Schema's — RNX Run Club</title>
+
+<style>
+  @font-face{
+    font-family:"Corporative Alt";
+    src:url("fonts/CorporativeMediumItalic.woff") format("woff");
+    font-weight:500;
+    font-style:italic;
+  }
+
+  :root{
+    --orange:#F38536;
+    --text:#FF6A00;
+    --bg:#FFE1CB;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Corporative Alt", sans-serif;
+    min-height:100vh;
+    padding:40px 24px;
+    position:relative;
+  }
+
+  /* HAMBURGER MENU */
+  .menu-overlay{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(4px);
+    opacity:0; pointer-events:none;
+    transition:.3s;
+    z-index:8;
+  }
+  .menu-overlay.show{
+    opacity:1; pointer-events:all;
+  }
+
+  .hamburger{
+    position:fixed; top:20px; left:20px;
+    width:36px; height:24px;
+    display:flex; flex-direction:column;
+    justify-content:space-between;
+    cursor:pointer;
+    z-index:10;
+  }
+  .hamburger div{
+    height:4px; background:#000; border-radius:3px;
+  }
+
+  .menu{
+    position:fixed; left:-260px; top:0;
+    width:240px; height:100%;
+    background:rgba(0,0,0,.9);
+    backdrop-filter:blur(6px);
+    padding:40px 20px;
+    transition:.35s cubic-bezier(.17,.67,.5,1.29);
+    display:flex; flex-direction:column;
+    gap:18px;
+    z-index:9;
+  }
+  .menu.show{ left:0 }
+
+  .menu-logo img{
+    width:120px;
+    margin:0 auto 20px;
+    display:block;
+  }
+
+  .menu a{
+    font-size:22px;
+    text-decoration:none;
+    font-weight:600;
+    color:#fff;
+  }
+  .menu a:hover{ color:var(--orange); }
+
+  /* CONTENT */
+  .content{
+    max-width:1100px;
+    margin:100px auto 40px;
+    text-align:center;
+  }
+
+  h1{
+    font-size:48px;
+    font-style:italic;
+    margin-bottom:20px;
+  }
+
+  .btn-row{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:40px;
+  }
+
+  .btn{
+    background:var(--orange);
+    color:white;
+    padding:12px 22px;
+    border-radius:9999px;
+    font-weight:900;
+    text-decoration:none;
+    cursor:pointer;
+    font-size:20px;
+    transition:.2s;
+  }
+  .btn:hover{
+    transform:translateY(-3px);
+  }
+
+  .schema{
+    background:white;
+    border:2px solid var(--orange);
+    padding:20px;
+    border-radius:16px;
+    text-align:left;
+    max-width:800px;
+    margin:0 auto;
+    box-shadow:0 10px 28px rgba(0,0,0,.1);
+    display:none;
+  }
+
+  .schema h2{
+    font-size:32px;
+    font-style:italic;
+    margin-bottom:14px;
+    color:var(--text);
+  }
+
+  .week{
+    margin-bottom:14px;
+    padding-bottom:14px;
+    border-bottom:1px solid #ffd2ad;
+  }
+
+  .week:last-child{
+    border-bottom:none;
+  }
+
+  .week strong{
+    color:var(--orange);
+  }
+</style>
+
+<script>
+  function toggleMenu(){
+    document.getElementById("menu").classList.toggle("show");
+    document.getElementById("menuOverlay").classList.toggle("show");
+  }
+
+  function showSTR(){
+    document.getElementById("schemaSTR").style.display="block";
+    document.getElementById("schema10k").style.display="none";
+  }
+
+  function show10K(){
+    document.getElementById("schemaSTR").style.display="none";
+    document.getElementById("schema10k").style.display="block";
+  }
+</script>
+</head>
+
+<body>
+
+<!-- MENU -->
+<div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
+<div class="hamburger" onclick="toggleMenu()"><div></div><div></div><div></div></div>
+
+<nav id="menu" class="menu">
+  <div class="menu-logo"><img src="images/logo.png" alt="RNX Run Club"></div>
+  <a href="index.html">Home</a>
+  <a href="over.html">Over ons</a>
+  <a href="events.html">Events</a>
+  <a href="schema.html">Schema</a>
+  <a href="shop.html">Shop</a>
+  <a href="info.html">Info</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <h1>Loop­schema’s</h1>
+
+  <div class="btn-row">
+    <button class="btn" onclick="showSTR()">Start to Run (8 weken → 5 km)</button>
+    <button class="btn" onclick="show10K()">10 km schema (12 weken)</button>
+  </div>
+
+  <!-- START TO RUN -->
+  <div id="schemaSTR" class="schema">
+    <h2>Start to Run — 8 weken naar 5 km</h2>
+
+    <div class="week"><strong>Week 1:</strong> 1 min lopen / 1.5 min wandelen × 8</div>
+    <div class="week"><strong>Week 2:</strong> 2 min lopen / 2 min wandelen × 6</div>
+    <div class="week"><strong>Week 3:</strong> 3 min lopen / 2 min wandelen × 5</div>
+    <div class="week"><strong>Week 4:</strong> 5 min lopen / 3 min wandelen × 4</div>
+    <div class="week"><strong>Week 5:</strong> 7 min lopen / 3 min wandelen × 3</div>
+    <div class="week"><strong>Week 6:</strong> 10 min lopen / 3 min wandelen × 2</div>
+    <div class="week"><strong>Week 7:</strong> 15 min lopen / 2 min wandelen × 2</div>
+    <div class="week"><strong>Week 8:</strong> 20–25 min lopen → 5 km</div>
+  </div>
+
+  <!-- 10 KM SCHEMA -->
+  <div id="schema10k" class="schema">
+    <h2>10 km Schema — 12 weken</h2>
+
+    <div class="week"><strong>Week 1:</strong> 4 km — 4 km</div>
+    <div class="week"><strong>Week 2:</strong> 5 km — 5 km</div>
+    <div class="week"><strong>Week 3:</strong> 5 km — 6 km</div>
+    <div class="week"><strong>Week 4:</strong> 6 km — 7 km</div>
+    <div class="week"><strong>Week 5:</strong> 6 km — 8 km</div>
+    <div class="week"><strong>Week 6:</strong> 7 km — 8 km</div>
+    <div class="week"><strong>Week 7:</strong> 7 km — 9 km</div>
+    <div class="week"><strong>Week 8:</strong> 8 km — 9 km</div>
+    <div class="week"><strong>Week 9:</strong> 8 km — 10 km</div>
+    <div class="week"><strong>Week 10:</strong> 9 km — 10 km</div>
+    <div class="week"><strong>Week 11:</strong> 9 km — 11 km</div>
+    <div class="week"><strong>Week 12:</strong> 8 km — 10 km (met zondag Social Run)</div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Events — RNX Run Club</title>
+
+<style>
+  @font-face{
+    font-family:"Corporative Alt";
+    src:url("fonts/CorporativeMediumItalic.woff") format("woff");
+    font-weight:500;
+    font-style:italic;
+  }
+
+  :root{
+    --orange:#F38536;
+    --text:#FF6A00;
+    --bg:#FFE1CB;
+    --chipSocial:#ffbf90;
+    --chipPlan:#cfe0ff;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Corporative Alt",sans-serif;
+    min-height:100vh;
+    padding:40px 24px;
+    position:relative;
+  }
+
+  /* HAMBURGER MENU */
+  .menu-overlay{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(4px);
+    opacity:0; pointer-events:none;
+    transition:.3s;
+    z-index:8;
+  }
+  .menu-overlay.show{
+    opacity:1; pointer-events:all;
+  }
+
+  .hamburger{
+    position:fixed; top:20px; left:20px;
+    width:36px; height:24px;
+    display:flex; flex-direction:column;
+    justify-content:space-between;
+    cursor:pointer;
+    z-index:10;
+  }
+  .hamburger div{
+    height:4px; background:#000; border-radius:3px;
+  }
+
+  .menu{
+    position:fixed; left:-260px; top:0;
+    width:240px; height:100%;
+    background:rgba(0,0,0,.9);
+    backdrop-filter:blur(6px);
+    padding:40px 20px;
+    transition:.35s cubic-bezier(.17,.67,.5,1.29);
+    display:flex; flex-direction:column;
+    gap:18px;
+    z-index:9;
+  }
+  .menu.show{ left:0 }
+
+  .menu-logo img{
+    width:120px;
+    margin:0 auto 20px;
+    display:block;
+  }
+
+  .menu a{
+    font-size:22px;
+    text-decoration:none;
+    font-weight:600;
+    color:#fff;
+  }
+  .menu a:hover{ color:var(--orange); }
+
+  .content{max-width:1100px;margin:80px auto 0}
+  h1{font-size:44px;font-style:italic;margin-bottom:10px;color:var(--text);}
+  .lead{opacity:.8;margin-bottom:16px;font-size:18px;}
+
+  /* MONTH SELECTOR */
+  .month-bar{display:flex;gap:8px;margin:20px 0;flex-wrap:wrap}
+  .month-btn{
+    border:2px solid var(--orange);
+    background:transparent;
+    color:var(--orange);
+    padding:10px 14px;
+    border-radius:9999px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.25s;
+  }
+  .month-btn:hover,
+  .month-btn.active{
+    background:var(--orange);
+    color:#fff;
+  }
+
+  .toggles{
+    margin-bottom:14px;
+    font-size:16px;
+    display:flex; gap:18px; flex-wrap:wrap;
+    color:var(--text);
+  }
+
+  /* CALENDAR */
+  .calendar{
+    border:2px solid var(--orange);
+    background:var(--orange);
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+  }
+
+  .cal-header{
+    display:grid;grid-template-columns:repeat(7,1fr);
+    background:rgba(255,255,255,.2);
+  }
+  .cal-header div{
+    text-align:center;
+    padding:12px;
+    font-weight:800;
+    color:white;
+  }
+
+  .cal-grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+  }
+
+  .day{
+    min-height:120px;
+    padding:10px;
+    border-right:1px solid rgba(255,255,255,.3);
+    border-bottom:1px solid rgba(255,255,255,.3);
+    cursor:pointer;
+    transition:.2s;
+    color:white;
+  }
+  .day:hover{
+    background:rgba(255,255,255,.25);
+  }
+  .day:nth-child(7n){
+    border-right:none;
+  }
+
+  .day-num{
+    font-weight:800;
+    margin-bottom:4px;
+    font-size:14px;
+  }
+
+  .event{
+    margin-top:6px;
+    padding:6px 8px;
+    font-size:12px;
+    border-radius:10px;
+    background:rgba(255,255,255,.25);
+    border:1px solid rgba(255,255,255,.5);
+    color:white;
+  }
+  .badge{
+    background:rgba(0,0,0,.35);
+    padding:2px 8px;
+    border-radius:9999px;
+    font-size:11px;
+    margin-right:4px;
+  }
+
+  /* DETAIL PANEL */
+  .detail-overlay{
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(2px);
+    opacity:0;pointer-events:none;
+    transition:.25s;
+    z-index:20;
+  }
+  .detail-overlay.show{
+    opacity:1;pointer-events:all;
+  }
+
+  .detail{
+    position:fixed;right:-420px;top:0;
+    width:380px;height:100%;
+    background:white;
+    color:#333;
+    display:flex;flex-direction:column;
+    transition:.35s cubic-bezier(.17,.67,.5,1.29);
+    z-index:21;
+  }
+  .detail.show{right:0}
+
+  .detail header{
+    padding:18px;
+    border-bottom:1px solid #eee;
+  }
+  .detail header h3{
+    margin:0;font-size:22px;color:var(--text);
+  }
+
+  .detail .body{
+    padding:20px 18px;
+    overflow:auto;
+  }
+
+  .item{
+    border:1px solid #eee;
+    background:#fafafa;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:12px;
+  }
+
+  .pill{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:9999px;
+    font-size:11px;
+    font-weight:700;
+    margin-bottom:8px;
+    color:#000;
+  }
+  .pill-social{background:var(--chipSocial);}
+  .pill-plan{background:var(--chipPlan);}
+
+  .detail footer{
+    border-top:1px solid #eee;
+    padding:14px 18px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .link-btn{
+    padding:10px 14px;
+    background:var(--orange);
+    color:white;
+    border-radius:9999px;
+    font-weight:900;
+    text-decoration:none;
+    cursor:pointer;
+    border:none;
+  }
+  .link-btn:hover{
+    transform:translateY(-2px);
+  }
+
+  .signup{
+    display:none;
+    gap:8px;
+    margin-left:auto;
+  }
+  .signup.show{
+    display:flex;
+  }
+  .signup input{
+    padding:8px 12px;
+    border-radius:9999px;
+    border:1px solid #ddd;
+  }
+
+  .okmsg{
+    display:none;
+    color:#16a34a;
+    font-weight:700;
+    font-size:13px;
+    margin-left:auto;
+  }
+
+  .close-btn{
+    padding:8px 12px;
+    background:#222;
+    color:white;
+    border:none;
+    border-radius:9999px;
+    font-weight:800;
+    margin-left:auto;
+    cursor:pointer;
+  }
+
+  /* GENERAL SIGNUP SECTION */
+  .signup-block{
+    margin-top:30px;
+    background:rgba(255,255,255,.6);
+    border:2px solid var(--orange);
+    padding:20px;
+    border-radius:16px;
+  }
+  .signup-block h2{
+    font-size:30px;
+    font-style:italic;
+    margin-bottom:10px;
+    color:var(--text);
+  }
+
+  .picklist{
+    max-height:260px;
+    overflow:auto;
+    border:1px solid var(--orange);
+    border-radius:12px;
+    padding:10px;
+    background:rgba(255,255,255,.4);
+    margin-bottom:14px;
+  }
+
+  .picklist label{
+    display:flex;align-items:center;
+    gap:10px;
+    padding:8px 6px;
+    border-bottom:1px solid rgba(0,0,0,.15);
+    color:var(--text);
+  }
+
+  .picklist input{
+    width:18px;height:18px;
+    accent-color:var(--orange);
+  }
+
+  .signup-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .signup-row input{
+    padding:10px 12px;
+    border-radius:9999px;
+    border:1px solid var(--orange);
+    color:var(--text);
+    width:260px;
+    background:white;
+  }
+  .signup-row button{
+    background:var(--orange);
+    color:white;
+    padding:10px 16px;
+    border:none;
+    border-radius:9999px;
+    font-weight:800;
+    cursor:pointer;
+  }
+
+  .saved-msg{
+    margin-top:10px;
+    color:#16a34a;
+    display:none;
+    font-weight:700;
+  }
+</style>
+
+<script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("menuOverlay").classList.toggle("show");
+}
+</script>
+</head>
+
+<body>
+
+<!-- MENU -->
+<div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
+<div class="hamburger" onclick="toggleMenu()"><div></div><div></div><div></div></div>
+
+<nav id="menu" class="menu">
+  <div class="menu-logo"><img src="images/logo.png" alt="RNX Run Club"></div>
+  <a href="index.html">Home</a>
+  <a href="over.html">Over ons</a>
+  <a href="events.html">Events</a>
+  <a href="schema.html">Schema</a>
+  <a href="shop.html">Shop</a>
+  <a href="info.html">Info</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<!-- CONTENT -->
+<div class="content">
+  <h1>Kalender 2026</h1>
+  <p class="lead">Klik op een dag voor details — elke zondag Social Club Run.</p>
+
+  <div id="monthBar" class="month-bar"></div>
+
+  <div class="toggles">
+    <label><input type="checkbox" id="togglePlan10k" onchange="render()"> Toon schema 10 km (12 weken)</label>
+    <label><input type="checkbox" id="toggleSTR" onchange="render()"> Toon Start to Run (8 weken)</label>
+  </div>
+
+  <!-- Calendar -->
+  <section class="calendar">
+    <div class="cal-header">
+      <div>Ma</div><div>Di</div><div>Wo</div>
+      <div>Do</div><div>Vr</div><div>Za</div><div>Zo</div>
+    </div>
+    <div id="grid" class="cal-grid"></div>
+  </section>
+
+  <!-- GENERAL SIGNUP -->
+  <section class="signup-block">
+    <h2>Algemene Inschrijving</h2>
+    <p>Selecteer één of meerdere zondagen waarop je wil meelopen.</p>
+
+    <div id="picklist" class="picklist"></div>
+
+    <div class="signup-row">
+      <input id="bulkEmail" type="email" placeholder="jouw@email.be">
+      <button onclick="saveBulkSignup()">Inschrijven</button>
+    </div>
+
+    <div id="bulkSaved" class="saved-msg">Ingeschreven ✔</div>
+  </section>
+</div>
+
+<!-- DETAIL PANEL -->
+<div id="detailOverlay" class="detail-overlay" onclick="closeDetail()"></div>
+<aside id="detail" class="detail">
+
+  <header>
+    <h3 id="detailTitle"></h3>
+    <div class="sub">Dagoverzicht</div>
+  </header>
+
+  <div id="detailBody" class="body"></div>
+
+  <footer>
+    <a href="schema.html" class="link-btn">Schema</a>
+    <button id="inschrijfBtn" class="link-btn" style="background:#222;display:none" onclick="toggleSignup()">Inschrijven</button>
+
+    <form id="signupForm" class="signup" onsubmit="return saveSignup(event)">
+      <input id="signupEmail" type="email" required placeholder="e-mail">
+      <button type="submit">OK</button>
+    </form>
+
+    <span id="okMsg" class="okmsg">✔ Ingeschreven</span>
+
+    <button class="close-btn" onclick="closeDetail()">Sluiten</button>
+  </footer>
+
+</aside>
+
+<script>
+/* ---------- DATA ---------- */
+const year=2026;
+const monthNames=["Januari","Februari","Maart","April","Mei","Juni","Juli",
+"Augustus","September","Oktober","November","December"];
+
+const sundays={
+  0:[4,11,18,25],1:[1,8,15,22],2:[1,8,15,22,29],3:[5,12,19,26],
+  4:[3,10,17,24,31],5:[7,14,21,28],6:[5,12,19,26],
+  7:[2,9,16,23,30],8:[6,13,20,27],9:[4,11,18,25],
+  10:[1,8,15,22,29],11:[6,13,20,27]
+};
+
+const startMonday=new Date(year,0,5);
+const plan10k=[[4,4],[5,5],[5,6],[6,7],[6,8],[7,8],[7,9],[8,9],[8,10],[9,10],[9,11],[8,10]];
+const STRdesc=[
+  "1 min lopen / 1.5 min wandelen × 8",
+  "2 min lopen / 2 min wandelen × 6",
+  "3 min lopen / 2 min wandelen × 5",
+  "5 min lopen / 3 min wandelen × 4",
+  "7 min lopen / 3 min wandelen × 3",
+  "10 min lopen / 3 min wandelen × 2",
+  "15 min lopen / 2 min wandelen × 2",
+  "20–25 min lopen → 5 km"
+];
+
+/* ---------- HELPERS ---------- */
+function pad(n){return String(n).padStart(2,"0")}
+function dateKey(y,m,d){return `${y}-${pad(m+1)}-${pad(d)}`}
+
+function weekIndexFor(date){
+  const diff=(date-startMonday)/86400000;
+  return diff<0?-1:Math.floor(diff/7);
+}
+
+/* ---------- MONTH BUTTONS ---------- */
+let currentMonth=0;
+const monthBar=document.getElementById("monthBar");
+
+monthNames.forEach((m,i)=>{
+  const b=document.createElement("button");
+  b.className="month-btn"+(i===0?" active":"");
+  b.textContent=m;
+  b.onclick=()=>{currentMonth=i;updateActive();render()};
+  monthBar.appendChild(b);
+});
+function updateActive(){
+  [...monthBar.children].forEach((b,i)=>b.classList.toggle("active",i===currentMonth));
+}
+
+/* ---------- CALENDAR RENDER ---------- */
+function render(){
+  const grid=document.getElementById("grid");
+  grid.innerHTML="";
+
+  const first=new Date(year,currentMonth,1);
+  const last=new Date(year,currentMonth+1,0);
+  const mondayFirst=(first.getDay()+6)%7;
+
+  const total=mondayFirst+last.getDate();
+  const trailing=(7-(total%7))%7;
+  const cells=total+trailing;
+
+  for(let i=0;i<cells;i++){
+    const cell=document.createElement("div");
+    cell.className="day";
+
+    if(i>=mondayFirst && i<mondayFirst+last.getDate()){
+      const day=i-mondayFirst+1;
+      const dt=new Date(year,currentMonth,day);
+
+      const num=document.createElement("div");
+      num.className="day-num";
+      num.textContent=day;
+      cell.appendChild(num);
+
+      if(sundays[currentMonth].includes(day)){
+        cell.appendChild(makeChip("Social Run — 5 km (09:30)",true));
+      }
+
+      const idx=weekIndexFor(dt);
+      const dow=(dt.getDay()+6)%7;
+
+      if(document.getElementById("togglePlan10k").checked && idx>=0 && idx<plan10k.length && (dow===1||dow===3)){
+        const km=(dow===1)?plan10k[idx][0]:plan10k[idx][1];
+        cell.appendChild(makeChip(`10K W${idx+1}: ${km} km`,false));
+      }
+
+      if(document.getElementById("toggleSTR").checked && idx>=0 && idx<STRdesc.length && (dow===0||dow===2||dow===4)){
+        cell.appendChild(makeChip(`STR W${idx+1}`,false));
+      }
+
+      cell.onclick=()=>openDetail(dt);
+    }
+
+    grid.appendChild(cell);
+  }
+}
+
+function makeChip(text,isSocial){
+  const d=document.createElement("div");
+  d.className="event";
+  const b=document.createElement("span");
+  b.className="badge";
+  b.textContent=isSocial?"SOCIAL":"SCHEMA";
+  d.appendChild(b);
+  d.append(" "+text);
+  return d;
+}
+
+/* ---------- DETAIL PANEL ---------- */
+let currentDetailKey=null;
+
+function resetDetailFooter(){
+  document.getElementById("inschrijfBtn").style.display="none";
+  document.getElementById("signupForm").classList.remove("show");
+  document.getElementById("okMsg").style.display="none";
+  document.getElementById("signupEmail").value="";
+}
+
+function openDetail(dateObj){
+  const y=dateObj.getFullYear(),m=dateObj.getMonth(),d=dateObj.getDate();
+  currentDetailKey=dateKey(y,m,d);
+
+  resetDetailFooter();
+
+  document.getElementById("detailTitle").textContent=
+    `${d} ${monthNames[m]} ${y}`;
+
+  const body=document.getElementById("detailBody");
+  body.innerHTML="";
+
+  const isSunday=sundays[m].includes(d);
+  const idx=weekIndexFor(dateObj);
+  const dow=(dateObj.getDay()+6)%7;
+
+  const items=[];
+
+  if(isSunday){
+    items.push({
+      type:"social",
+      title:"Social Club Run",
+      desc:"5 km @ 7:00/km — Start 09:30"
+    });
+  }
+
+  if(document.getElementById("togglePlan10k").checked && idx>=0 && idx<plan10k.length && (dow===1||dow===3)){
+    const km=(dow===1)?plan10k[idx][0]:plan10k[idx][1];
+    items.push({type:"plan",title:`10 km — Week ${idx+1}`,desc:`${km} km rustig`});
+  }
+
+  if(document.getElementById("toggleSTR").checked && idx>=0 && idx<STRdesc.length && (dow===0||dow===2||dow===4)){
+    items.push({type:"plan",title:`Start to Run — Week ${idx+1}`,desc:STRdesc[idx]});
+  }
+
+  if(items.length===0){
+    const p=document.createElement("p");
+    p.textContent="Geen items op deze dag.";
+    p.style.opacity=".6";
+    body.appendChild(p);
+  }
+  else{
+    items.forEach(ev=>{
+      const box=document.createElement("div");
+      box.className="item";
+
+      const tag=document.createElement("span");
+      tag.className="pill "+(ev.type==="social"?"pill-social":"pill-plan");
+      tag.textContent=ev.type==="social"?"SOCIAL":"SCHEMA";
+
+      const h=document.createElement("h4");
+      h.textContent=ev.title;
+
+      const p=document.createElement("p");
+      p.textContent=ev.desc;
+
+      box.append(tag,h,p);
+      body.appendChild(box);
+    });
+  }
+
+  if(isSunday){
+    document.getElementById("inschrijfBtn").style.display="inline-block";
+  }
+
+  document.getElementById("detailOverlay").classList.add("show");
+  document.getElementById("detail").classList.add("show");
+}
+
+function closeDetail(){
+  document.getElementById("detailOverlay").classList.remove("show");
+  document.getElementById("detail").classList.remove("show");
+  resetDetailFooter();
+}
+
+/* ---------- SIGNUP (DETAIL) ---------- */
+function validateEmail(email){
+  return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+}
+
+function setSignup(key,email){
+  let db={};
+  try{db=JSON.parse(localStorage.getItem("rnx_signups")||"{}");}catch(_){}
+  db[key]=email;
+  localStorage.setItem("rnx_signups",JSON.stringify(db));
+}
+
+function saveSignup(e){
+  e.preventDefault();
+  const email=document.getElementById("signupEmail").value.trim();
+  if(!validateEmail(email)){alert("Ongeldig e-mailadres");return false;}
+  setSignup(currentDetailKey,email);
+  document.getElementById("signupForm").classList.remove("show");
+  document.getElementById("okMsg").style.display="inline";
+  return false;
+}
+
+function toggleSignup(){
+  document.getElementById("okMsg").style.display="none";
+  document.getElementById("signupForm").classList.toggle("show");
+}
+
+/* ---------- GENERAL SIGNUP ---------- */
+function allSundayEntries(){
+  const arr=[];
+  for(let m=0;m<12;m++){
+    sundays[m].forEach(d=>{
+      arr.push({
+        key:dateKey(year,m,d),
+        label:`${d} ${monthNames[m]} ${year}`
+      });
+    });
+  }
+  return arr;
+}
+
+function buildPicklist(){
+  const pick=document.getElementById("picklist");
+  pick.innerHTML="";
+
+  const db=JSON.parse(localStorage.getItem("rnx_signups")||"{}");
+
+  allSundayEntries().forEach(e=>{
+    const row=document.createElement("label");
+    const cb=document.createElement("input");
+    cb.type="checkbox";
+    cb.dataset.key=e.key;
+    if(db[e.key]) cb.checked=true;
+
+    const txt=document.createElement("span");
+    txt.textContent=e.label+" — Social Club Run";
+
+    row.append(cb,txt);
+    pick.appendChild(row);
+  });
+}
+
+function saveBulkSignup(){
+  const email=document.getElementById("bulkEmail").value.trim();
+  if(!validateEmail(email)){alert("Ongeldig e-mailadres");return;}
+
+  const checks=[...document.querySelectorAll('#picklist input:checked')];
+  if(checks.length===0){alert("Selecteer minstens 1 datum");return;}
+
+  checks.forEach(cb=>{
+    setSignup(cb.dataset.key,email);
+  });
+
+  const msg=document.getElementById("bulkSaved");
+  msg.textContent=`Ingeschreven voor ${checks.length} dag(en) ✔`;
+  msg.style.display="block";
+  setTimeout(()=>msg.style.display="none",2500);
+}
+
+/* ---------- START ---------- */
+render();
+buildPicklist();
+</script>
+
+</body>
+</html>
