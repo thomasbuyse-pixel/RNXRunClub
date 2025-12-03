@@ -2,8 +2,8 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Schema's — RNX Run Club</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Schema — RNX Run Club</title>
 
 <style>
   @font-face{
@@ -19,15 +19,14 @@
     --bg:#FFE1CB;
   }
 
-  *{margin:0;padding:0;box-sizing:border-box}
+  *{margin:0;padding:0;box-sizing:border-box;}
 
   body{
     background:var(--bg);
     color:var(--text);
-    font-family:"Corporative Alt", sans-serif;
+    font-family:"Corporative Alt",sans-serif;
     min-height:100vh;
     padding:40px 24px;
-    position:relative;
   }
 
   /* HAMBURGER MENU */
@@ -52,7 +51,8 @@
     z-index:10;
   }
   .hamburger div{
-    height:4px; background:#000; border-radius:3px;
+    height:4px; background:#000;
+    border-radius:3px;
   }
 
   .menu{
@@ -71,21 +71,22 @@
   .menu-logo img{
     width:120px;
     margin:0 auto 20px;
-    display:block;
   }
 
   .menu a{
     font-size:22px;
     text-decoration:none;
     font-weight:600;
-    color:#fff;
+    color:white;
   }
-  .menu a:hover{ color:var(--orange); }
+  .menu a:hover{
+    color:var(--orange);
+  }
 
   /* CONTENT */
   .content{
-    max-width:1100px;
-    margin:100px auto 40px;
+    max-width:1000px;
+    margin:120px auto;
     text-align:center;
   }
 
@@ -95,78 +96,77 @@
     margin-bottom:20px;
   }
 
-  .btn-row{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    flex-wrap:wrap;
-    margin-bottom:40px;
-  }
-
   .btn{
     background:var(--orange);
     color:white;
-    padding:12px 22px;
+    padding:14px 22px;
+    font-weight:800;
     border-radius:9999px;
-    font-weight:900;
     text-decoration:none;
+    display:inline-block;
+    margin:10px;
     cursor:pointer;
-    font-size:20px;
     transition:.2s;
+    font-size:22px;
   }
   .btn:hover{
     transform:translateY(-3px);
   }
 
-  .schema{
+  .schema-block{
     background:white;
     border:2px solid var(--orange);
+    margin-top:30px;
     padding:20px;
-    border-radius:16px;
-    text-align:left;
-    max-width:800px;
-    margin:0 auto;
-    box-shadow:0 10px 28px rgba(0,0,0,.1);
+    border-radius:20px;
     display:none;
+    text-align:left;
+    box-shadow:0 10px 28px rgba(0,0,0,.12);
   }
 
-  .schema h2{
+  .schema-block h2{
+    margin-bottom:20px;
     font-size:32px;
     font-style:italic;
-    margin-bottom:14px;
     color:var(--text);
   }
 
-  .week{
-    margin-bottom:14px;
-    padding-bottom:14px;
-    border-bottom:1px solid #ffd2ad;
+  .week-block{
+    margin-bottom:20px;
+    padding:15px;
+    background:#fff4ea;
+    border:1px solid #ffd3ad;
+    border-radius:12px;
+  }
+  .week-block h3{
+    margin-bottom:10px;
+    font-size:22px;
+    color:var(--text);
+  }
+  .week-block p{
+    margin-bottom:8px;
   }
 
-  .week:last-child{
-    border-bottom:none;
-  }
-
-  .week strong{
-    color:var(--orange);
+  .tips{
+    background:#fff4ea;
+    border:1px solid #ffd3ad;
+    padding:20px;
+    border-radius:16px;
+    margin-top:20px;
   }
 </style>
 
 <script>
-  function toggleMenu(){
-    document.getElementById("menu").classList.toggle("show");
-    document.getElementById("menuOverlay").classList.toggle("show");
-  }
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("menuOverlay").classList.toggle("show");
+}
 
-  function showSTR(){
-    document.getElementById("schemaSTR").style.display="block";
-    document.getElementById("schema10k").style.display="none";
-  }
-
-  function show10K(){
-    document.getElementById("schemaSTR").style.display="none";
-    document.getElementById("schema10k").style.display="block";
-  }
+function showSchema(id){
+  document.getElementById("schema1").style.display="none";
+  document.getElementById("schema2").style.display="none";
+  document.getElementById(id).style.display="block";
+}
 </script>
 </head>
 
@@ -174,10 +174,12 @@
 
 <!-- MENU -->
 <div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
-<div class="hamburger" onclick="toggleMenu()"><div></div><div></div><div></div></div>
+<div class="hamburger" onclick="toggleMenu()">
+  <div></div><div></div><div></div>
+</div>
 
 <nav id="menu" class="menu">
-  <div class="menu-logo"><img src="images/logo.png" alt="RNX Run Club"></div>
+  <div class="menu-logo"><img src="images/logo.png"></div>
   <a href="index.html">Home</a>
   <a href="over.html">Over ons</a>
   <a href="events.html">Events</a>
@@ -189,46 +191,124 @@
 
 <!-- CONTENT -->
 <div class="content">
+  <h1>Loopschema's</h1>
 
-  <h1>Loop­schema’s</h1>
-
-  <div class="btn-row">
-    <button class="btn" onclick="showSTR()">Start to Run (8 weken → 5 km)</button>
-    <button class="btn" onclick="show10K()">10 km schema (12 weken)</button>
+  <div>
+    <button class="btn" onclick="showSchema('schema1')">Start to Run — 8 weken — 5 km</button>
+    <button class="btn" onclick="showSchema('schema2')">10 km Schema — 12 weken</button>
   </div>
 
-  <!-- START TO RUN -->
-  <div id="schemaSTR" class="schema">
-    <h2>Start to Run — 8 weken naar 5 km</h2>
+  <!-- START TO RUN — 8 WEKEN -->
+  <div id="schema1" class="schema-block">
+    <h2>🗓️ Start to Run — 8 weken — doel: 5 km aan 7:00/km</h2>
 
-    <div class="week"><strong>Week 1:</strong> 1 min lopen / 1.5 min wandelen × 8</div>
-    <div class="week"><strong>Week 2:</strong> 2 min lopen / 2 min wandelen × 6</div>
-    <div class="week"><strong>Week 3:</strong> 3 min lopen / 2 min wandelen × 5</div>
-    <div class="week"><strong>Week 4:</strong> 5 min lopen / 3 min wandelen × 4</div>
-    <div class="week"><strong>Week 5:</strong> 7 min lopen / 3 min wandelen × 3</div>
-    <div class="week"><strong>Week 6:</strong> 10 min lopen / 3 min wandelen × 2</div>
-    <div class="week"><strong>Week 7:</strong> 15 min lopen / 2 min wandelen × 2</div>
-    <div class="week"><strong>Week 8:</strong> 20–25 min lopen → 5 km</div>
+    <div class="week-block">
+      <h3>Week 1</h3>
+      <p>Training 1: 1 min lopen + 2 min wandelen × 10</p>
+      <p>Training 2: 2 min lopen + 2 min wandelen × 7</p>
+      <p>Training 3: 3 min lopen + 2 min wandelen × 5</p>
+    </div>
+
+    <div class="week-block">
+      <h3>Week 2</h3>
+      <p>Training 1: 4 min lopen + 2 min wandelen × 5</p>
+      <p>Training 2: 5 min lopen + 2 min wandelen × 4</p>
+      <p>Training 3: 6 min lopen + 2 min wandelen × 3</p>
+    </div>
+
+    <div class="week-block">
+      <h3>Week 3</h3>
+      <p>Training 1: 8 min lopen + 2 min wandelen × 3</p>
+      <p>Training 2: 10 min lopen + 2 min wandelen × 2</p>
+      <p>Training 3: 12 min lopen + 2 min wandelen × 2</p>
+    </div>
+
+    <div class="week-block">
+      <h3>Week 4</h3>
+      <p>Training 1: 15 min lopen + 2 min wandelen × 2</p>
+      <p>Training 2: 18 min lopen + 2 min wandelen × 1</p>
+      <p>Training 3: 20 min lopen (zonder wandelen)</p>
+    </div>
+
+    <div class="week-block">
+      <h3>Week 5</h3>
+      <p>Training 1: 22 min lopen</p>
+      <p>Training 2: 25 min lopen</p>
+      <p>Training 3: 28 min lopen</p>
+    </div>
+
+    <div class="week-block">
+      <h3>Week 6</h3>
+      <p>Training 1: 30 min lopen</p>
+      <p>Training 2: 32 min lopen</p>
+      <p>Training 3: 34 min lopen</p>
+    </div>
+
+    <div class="week-block">
+      <h3>Week 7</h3>
+      <p>Training 1: 35 min lopen</p>
+      <p>Training 2: 30 min lopen (rustig tempo)</p>
+      <p>Training 3: 36 min lopen</p>
+    </div>
+
+    <div class="week-block">
+      <h3>Week 8</h3>
+      <p>Training 1: 20 min rustig lopen</p>
+      <p>Training 2: 5 km testloop aan 7:00/km</p>
+      <p>Training 3: 5 km herhaling (optioneel)</p>
+    </div>
+
+    <div class="tips">
+      <h3>🔑 Tips voor succes</h3>
+      <p><strong>Frequentie:</strong> 3 trainingen per week, met rustdagen ertussen.</p>
+      <p><strong>Tempo:</strong> 7:00–7:30/km, doel = volhouden.</p>
+      <p><strong>Opwarming:</strong> 5 min wandelen of jog.</p>
+      <p><strong>Cooling down:</strong> 5 min wandelen + stretchen.</p>
+      <p><strong>Progressie:</strong> week te zwaar? Herhaal.</p>
+    </div>
   </div>
 
-  <!-- 10 KM SCHEMA -->
-  <div id="schema10k" class="schema">
-    <h2>10 km Schema — 12 weken</h2>
+  <!-- 10 KM — 12 WEKEN -->
+  <div id="schema2" class="schema-block">
+    <h2>🗓️ 10 km opbouwschema — 12 weken — 3 trainingen per week</h2>
 
-    <div class="week"><strong>Week 1:</strong> 4 km — 4 km</div>
-    <div class="week"><strong>Week 2:</strong> 5 km — 5 km</div>
-    <div class="week"><strong>Week 3:</strong> 5 km — 6 km</div>
-    <div class="week"><strong>Week 4:</strong> 6 km — 7 km</div>
-    <div class="week"><strong>Week 5:</strong> 6 km — 8 km</div>
-    <div class="week"><strong>Week 6:</strong> 7 km — 8 km</div>
-    <div class="week"><strong>Week 7:</strong> 7 km — 9 km</div>
-    <div class="week"><strong>Week 8:</strong> 8 km — 9 km</div>
-    <div class="week"><strong>Week 9:</strong> 8 km — 10 km</div>
-    <div class="week"><strong>Week 10:</strong> 9 km — 10 km</div>
-    <div class="week"><strong>Week 11:</strong> 9 km — 11 km</div>
-    <div class="week"><strong>Week 12:</strong> 8 km — 10 km (met zondag Social Run)</div>
+    <p><strong>Structuur per week:</strong></p>
+    <div class="week-block">
+      <p><strong>Training 1 (dinsdag/woensdag):</strong> Duurloop-opbouw</p>
+      <p><strong>Training 2 (vrijdag/zaterdag):</strong> Tempoloop / interval</p>
+      <p><strong>Training 3 (zondag):</strong> 5 km groepsloop</p>
+    </div>
+
+    <div class="week-block">
+      <h3>Weken 1–4 — Basisopbouw</h3>
+      <p><strong>T1:</strong> 6 km → 7 km → 8 km → 8 km</p>
+      <p><strong>T2:</strong> 4 × 3 min @ 6:45/km + 2 min herstel</p>
+      <p><strong>T3:</strong> 5 km samen</p>
+    </div>
+
+    <div class="week-block">
+      <h3>Weken 5–8 — Afstand vergroten</h3>
+      <p><strong>T1:</strong> 9 km → 9 km → 10 km → 10 km</p>
+      <p><strong>T2:</strong> 5 × 4 min @ 6:45/km + 2 min herstel</p>
+      <p><strong>T3:</strong> 5 km samen</p>
+    </div>
+
+    <div class="week-block">
+      <h3>Weken 9–12 — Doel & testloop</h3>
+      <p><strong>T1:</strong> 10 km → 10 km → 11 km → 12 km  
+      <br>(Week 12 = testloop 10 km)</p>
+      <p><strong>T2:</strong> 6 × 5 min @ 6:45/km + 2 min herstel</p>
+      <p><strong>T3:</strong> 5 km samen</p>
+    </div>
+
+    <div class="tips">
+      <h3>🔑 Belangrijke tips</h3>
+      <p><strong>Tempo:</strong> duurlopen 7:00–7:15/km, intervallen ±6:45/km.</p>
+      <p><strong>Rust:</strong> minstens 1 dag rust na lange duurloop.</p>
+      <p><strong>Progressie:</strong> te zwaar? Week herhalen.</p>
+      <p><strong>Testloop:</strong> plan je 10 km in week 12.</p>
+    </div>
   </div>
-
 </div>
 
 </body>
