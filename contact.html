@@ -19,7 +19,7 @@
     --bg:#FFE1CB;
   }
 
-  *{margin:0;padding:0;box-sizing:border-box}
+  *{margin:0;padding:0;box-sizing:border-box;}
 
   body{
     background:var(--bg);
@@ -39,14 +39,17 @@
     transition:.3s;
     z-index:8;
   }
-  .menu-overlay.show{ opacity:1; pointer-events:all; }
+  .menu-overlay.show{
+    opacity:1; pointer-events:all;
+  }
 
   .hamburger{
     position:fixed; top:20px; left:20px;
     width:36px; height:24px;
     display:flex; flex-direction:column;
     justify-content:space-between;
-    cursor:pointer; z-index:10;
+    cursor:pointer;
+    z-index:10;
   }
   .hamburger div{
     height:4px; background:#000; border-radius:3px;
@@ -60,32 +63,40 @@
     padding:40px 20px;
     transition:.35s cubic-bezier(.17,.67,.5,1.29);
     display:flex; flex-direction:column;
-    gap:18px; z-index:9;
+    gap:18px;
+    z-index:9;
   }
   .menu.show{ left:0 }
 
   .menu-logo img{
-    width:120px; margin:0 auto 20px; display:block;
+    width:120px;
+    margin:0 auto 20px;
   }
 
   .menu a{
-    font-size:22px; color:#fff;
-    text-decoration:none; font-weight:600;
+    font-size:22px;
+    text-decoration:none;
+    font-weight:600;
+    color:white;
   }
-  .menu a:hover{ color:var(--orange); }
+  .menu a:hover{
+    color:var(--orange);
+  }
 
   /* CONTENT */
+  .content{
+    max-width:1100px;
+    margin:120px auto 40px;
+  }
+
   h1{
-    font-size:48px;
     text-align:center;
-    margin-top:100px;
+    font-size:48px;
     font-style:italic;
     margin-bottom:30px;
   }
 
   .grid{
-    max-width:1100px;
-    margin:0 auto;
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:40px;
@@ -98,9 +109,9 @@
   .card{
     background:white;
     border:2px solid var(--orange);
-    padding:20px;
     border-radius:16px;
-    box-shadow:0 10px 28px rgba(0,0,0,.1);
+    padding:20px;
+    box-shadow:0 10px 28px rgba(0,0,0,.12);
   }
 
   .card h2{
@@ -110,8 +121,7 @@
     color:var(--text);
   }
 
-  /* CONTACT FORM */
-  input, textarea{
+  input,textarea{
     width:100%;
     padding:12px;
     border-radius:12px;
@@ -138,9 +148,10 @@
     display:inline-block;
     transition:.2s;
   }
-  .btn:hover{ transform:translateY(-3px); }
+  .btn:hover{
+    transform:translateY(-3px);
+  }
 
-  /* SOCIALS */
   .socials a{
     display:block;
     margin-bottom:10px;
@@ -152,15 +163,14 @@
     font-weight:800;
     width:max-content;
   }
-  .socials a:hover{ transform:translateY(-3px); }
 
-  /* MAP */
   iframe{
     width:100%;
     height:260px;
     border-radius:14px;
     border:2px solid var(--orange);
   }
+
 </style>
 
 <script>
@@ -169,8 +179,8 @@ function toggleMenu(){
   document.getElementById("menuOverlay").classList.toggle("show");
 }
 </script>
-</head>
 
+</head>
 <body>
 
 <!-- MENU -->
@@ -178,7 +188,7 @@ function toggleMenu(){
 <div class="hamburger" onclick="toggleMenu()"><div></div><div></div><div></div></div>
 
 <nav id="menu" class="menu">
-  <div class="menu-logo"><img src="images/logo.png" alt="RNX Run Club"></div>
+  <div class="menu-logo"><img src="images/logo.png"></div>
   <a href="index.html">Home</a>
   <a href="over.html">Over ons</a>
   <a href="events.html">Events</a>
@@ -189,42 +199,50 @@ function toggleMenu(){
 </nav>
 
 <!-- CONTENT -->
-<h1>Contacteer ons</h1>
+<div class="content">
+  <h1>Contacteer ons</h1>
 
-<div class="grid">
+  <div class="grid">
 
-  <!-- FORM -->
-  <div class="card">
-    <h2>Stuur ons een bericht</h2>
+    <!-- FORM -->
+    <div class="card">
+      <h2>Stuur ons een bericht</h2>
 
-    <form onsubmit="alert('Bericht verzonden!'); return false;">
-      <input type="text" placeholder="Naam" required>
-      <input type="email" placeholder="E-mail" required>
-      <textarea placeholder="Bericht" required></textarea>
-      <button class="btn" type="submit">Verstuur</button>
-    </form>
-  </div>
+      <form action="https://formsubmit.co/rnx_run_club@hotmail.com" method="POST">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_subject" value="Nieuw bericht via RNX website">
 
-  <!-- OTHER INFO -->
-  <div class="card">
-    <h2>Kom bij de community</h2>
+        <input type="text" name="Naam" placeholder="Naam" required>
+        <input type="email" name="Email" placeholder="E-mail" required>
+        <textarea name="Bericht" placeholder="Bericht" required></textarea>
 
-    <div class="socials">
-      <a href="https://www.strava.com/clubs/1685365?utm_source=android_share&utm_medium=social&share_sig=STYH9N2O1757444870&fbclid=IwY2xjawOdZstleHRuA2FlbQIxMABicmlkETBydng1Y2U5SlBWQVVubVVKc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHvIi3AsVf5HJ_sTvfrR767ZV0ul-HyHquSJtIgXXxS3eRmm7ePZc3UVrypig_aem_X-VGTIwzzYyEKHy21Of24Q&_branch_match_id=1524760869409775953&_branch_referrer=H4sIAAAAAAAAAwXB226CMAAA0L%2FZm6IgI1liFhhuLaRhCJbLCyml3CzIyqXgg9%2B%2Bc%2BppGsYPRRknQRayJ8Ow501%2FV1wex60rAhnln2VOeVOcoUzUtSXSK9Jx4gxcZ1P95rkPV2RaDe34%2FRJaW9FXx0S96QG3Ih%2FjOcfYpZpzSGRaU2CVJPJ91MIN2UhHIT15NpTIrnRUmRZYYKOZIy514GRjuJTiarwbKT7MfAc28DcHzgSrOF4DjV27zmC%2FKdVuWGxDU2WEdVm8wz8hlM9nsl1csKlHr1RP%2FttLsJIJ0fRVlouHHJk4f9Xi0bF%2F4H6igP4AAAA%3D" target="_blank">🏃 Strava</a>
+        <button class="btn" type="submit">Verstuur</button>
+      </form>
+    </div>
+
+    <!-- INFO -->
+    <div class="card">
+      <h2>Kom bij de community</h2>
+
+      <p style="opacity:.8;margin-bottom:10px;">E-mail: <strong>rnx_run_club@hotmail.com</strong></p>
+
+      <div class="socials">
+        <a href="https://www.strava.com/clubs/1685365?utm_source=android_share&utm_medium=social&share_sig=STYH9N2O1757444870&fbclid=IwY2xjawOdZstleHRuA2FlbQIxMABicmlkETBydng1Y2U5SlBWQVVubVVKc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHvIi3AsVf5HJ_sTvfrR767ZV0ul-HyHquSJtIgXXxS3eRmm7ePZc3UVrypig_aem_X-VGTIwzzYyEKHy21Of24Q&_branch_match_id=1524760869409775953&_branch_referrer=H4sIAAAAAAAAAwXB226CMAAA0L%2FZm6IgI1liFhhuLaRhCJbLCyml3CzIyqXgg9%2B%2Bc%2BppGsYPRRknQRayJ8Ow501%2FV1wex60rAhnln2VOeVOcoUzUtSXSK9Jx4gxcZ1P95rkPV2RaDe34%2FRJaW9FXx0S96QG3Ih%2FjOcfYpZpzSGRaU2CVJPJ91MIN2UhHIT15NpTIrnRUmRZYYKOZIy514GRjuJTiarwbKT7MfAc28DcHzgSrOF4DjV27zmC%2FKdVuWGxDU2WEdVm8wz8hlM9nsl1csKlHr1RP%2FttLsJIJ0fRVlouHHJk4f9Xi0bF%2F4H6igP4AAAA%3D" target="_blank">🏃 Strava</a>
       <a href="https://www.instagram.com/rnxrunclub/?igsh=NnF2bWgyemo4NnBl&fbclid=IwY2xjawOdZsdleHRuA2FlbQIxMABicmlkETBydng1Y2U5SlBWQVVubVVKc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHsLPfVkOd8FY5C6anIG_HFZxnmN_TyslllvxAAnWZd9G3xS32bSy6mY5poDr_aem_JxokYzxiB6KfpynEPi2v0A#" target="_blank">📸 Instagram</a>
       <a href="https://www.facebook.com/people/RNX-Run-Club/61582389850745/" target="_blank">📘 Facebook</a>
       <a href="https://chat.whatsapp.com/LXe0J0wE25PLn9C35R434H" target="_blank">💬 WhatsApp</a>
+      </div>
+
+      <h2 style="margin-top:30px;">Onze locatie</h2>
+      <p style="opacity:.8;margin-bottom:10px;">Startplaats: T Rosco Ronse</p>
+
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2558.553775940619!2d3.600151615721196!3d50.7546309795177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c33350d0e7b139%3A0xa3dff4d54df32a49!2s't%20Rosco!5e0!3m2!1snl!2sbe!4v1700000000000"
+        allowfullscreen="" loading="lazy">
+      </iframe>
     </div>
 
-    <h2 style="margin-top:30px;">Onze locatie</h2>
-    <p style="opacity:.8;margin-bottom:10px;">Startplaats: T Rosco Ronse</p>
-
-    <iframe 
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2558.553775940619!2d3.600151615721196!3d50.7546309795177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c33350d0e7b139%3A0xa3dff4d54df32a49!2s't%20Rosco!5e0!3m2!1snl!2sbe!4v1700000000000"
-      allowfullscreen="" loading="lazy">
-    </iframe>
   </div>
-
 </div>
 
 </body>
