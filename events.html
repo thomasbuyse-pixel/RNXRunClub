@@ -252,6 +252,7 @@
     cursor:pointer;
     border:none;
   }
+
   .link-btn:hover{
     transform:translateY(-2px);
   }
@@ -264,6 +265,7 @@
   .signup.show{
     display:flex;
   }
+
   .signup input{
     padding:8px 12px;
     border-radius:9999px;
@@ -341,6 +343,7 @@
     width:260px;
     background:white;
   }
+
   .signup-row button{
     background:var(--orange);
     color:white;
@@ -382,6 +385,7 @@ function toggleMenu(){
   <a href="shop.html">Shop</a>
   <a href="info.html">Info</a>
   <a href="contact.html">Contact</a>
+  <a href="sponsors.html">Sponsors</a>
 </nav>
 
 <!-- CONTENT -->
@@ -396,7 +400,6 @@ function toggleMenu(){
     <label><input type="checkbox" id="toggleSTR" onchange="render()"> Toon Start to Run (8 weken)</label>
   </div>
 
-  <!-- Calendar -->
   <section class="calendar">
     <div class="cal-header">
       <div>Ma</div><div>Di</div><div>Wo</div>
@@ -418,6 +421,15 @@ function toggleMenu(){
     </div>
 
     <div id="bulkSaved" class="saved-msg">Ingeschreven ✔</div>
+
+    <!-- HIDDEN FORM FOR MAIL -->
+    <form id="emailBulk" action="https://formsubmit.co/rnx_run_club@hotmail.com" method="POST" style="display:none;">
+      <input type="hidden" name="_subject" value="Algemene inschrijving — RNX Run Club">
+      <input type="hidden" name="Email" id="emailBulkAddress">
+      <input type="hidden" name="Datums" id="emailBulkDates">
+      <input type="hidden" name="_captcha" value="false">
+    </form>
+
   </section>
 </div>
 
@@ -433,7 +445,9 @@ function toggleMenu(){
   <div id="detailBody" class="body"></div>
 
   <footer>
-    <a href="schema.html" class="link-btn">Schema</a>
+    <a href="schema.html#str" class="link-btn">Schema Start to Run</a>
+    <a href="schema.html#10k" class="link-btn">Schema 10 km</a>
+
     <button id="inschrijfBtn" class="link-btn" style="background:#222;display:none" onclick="toggleSignup()">Inschrijven</button>
 
     <form id="signupForm" class="signup" onsubmit="return saveSignup(event)">
@@ -442,6 +456,14 @@ function toggleMenu(){
     </form>
 
     <span id="okMsg" class="okmsg">✔ Ingeschreven</span>
+
+    <!-- HIDDEN EMAIL FORM FOR DETAIL SIGNUP -->
+    <form id="emailDetail" action="https://formsubmit.co/rnx_run_club@hotmail.com" method="POST" style="display:none;">
+      <input type="hidden" name="_subject" value="Nieuwe inschrijving — RNX Event">
+      <input type="hidden" id="emailDetailDate" name="Datum">
+      <input type="hidden" id="emailDetailEmail" name="Email">
+      <input type="hidden" name="_captcha" value="false">
+    </form>
 
     <button class="close-btn" onclick="closeDetail()">Sluiten</button>
   </footer>
@@ -462,7 +484,9 @@ const sundays={
 };
 
 const startMonday=new Date(year,0,5);
+
 const plan10k=[[4,4],[5,5],[5,6],[6,7],[6,8],[7,8],[7,9],[8,9],[8,10],[9,10],[9,11],[8,10]];
+
 const STRdesc=[
   "1 min lopen / 1.5 min wandelen × 8",
   "2 min lopen / 2 min wandelen × 6",
@@ -474,7 +498,6 @@ const STRdesc=[
   "20–25 min lopen → 5 km"
 ];
 
-/* ---------- HELPERS ---------- */
 function pad(n){return String(n).padStart(2,"0")}
 function dateKey(y,m,d){return `${y}-${pad(m+1)}-${pad(d)}`}
 
@@ -524,10 +547,12 @@ function render(){
       num.textContent=day;
       cell.appendChild(num);
 
+      /* SOCIAL RUNS */
       if(sundays[currentMonth].includes(day)){
-        cell.appendChild(makeChip("Social Run — 5 km (09:30)",true));
+        cell.appendChild(makeChip("Social Run — 5 km (09:00)",true));
       }
 
+      /* SCHEMAS */
       const idx=weekIndexFor(dt);
       const dow=(dt.getDay()+6)%7;
 
@@ -590,7 +615,7 @@ function openDetail(dateObj){
     items.push({
       type:"social",
       title:"Social Club Run",
-      desc:"5 km @ 7:00/km — Start 09:30"
+      desc:"5 km @ 7:00/km — Start 09:00"
     });
   }
 
@@ -637,13 +662,14 @@ function openDetail(dateObj){
   document.getElementById("detail").classList.add("show");
 }
 
+/* ---------- CLOSE DETAIL ---------- */
 function closeDetail(){
   document.getElementById("detailOverlay").classList.remove("show");
   document.getElementById("detail").classList.remove("show");
   resetDetailFooter();
 }
 
-/* ---------- SIGNUP (DETAIL) ---------- */
+/* ---------- SIGNUP (DETAIL PANEL) ---------- */
 function validateEmail(email){
   return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
 }
@@ -658,10 +684,21 @@ function setSignup(key,email){
 function saveSignup(e){
   e.preventDefault();
   const email=document.getElementById("signupEmail").value.trim();
-  if(!validateEmail(email)){alert("Ongeldig e-mailadres");return false;}
+
+  if(!validateEmail(email)){
+    alert("Ongeldig e-mailadres");
+    return false;
+  }
+
   setSignup(currentDetailKey,email);
+
+  document.getElementById("emailDetailDate").value=currentDetailKey;
+  document.getElementById("emailDetailEmail").value=email;
+  document.getElementById("emailDetail").submit();
+
   document.getElementById("signupForm").classList.remove("show");
   document.getElementById("okMsg").style.display="inline";
+
   return false;
 }
 
@@ -707,22 +744,35 @@ function buildPicklist(){
 
 function saveBulkSignup(){
   const email=document.getElementById("bulkEmail").value.trim();
-  if(!validateEmail(email)){alert("Ongeldig e-mailadres");return;}
+  if(!validateEmail(email)){
+    alert("Ongeldig e-mailadres");
+    return;
+  }
 
   const checks=[...document.querySelectorAll('#picklist input:checked')];
-  if(checks.length===0){alert("Selecteer minstens 1 datum");return;}
+  if(checks.length===0){
+    alert("Selecteer minstens 1 datum");
+    return;
+  }
 
   checks.forEach(cb=>{
     setSignup(cb.dataset.key,email);
   });
 
+  const dates=checks.map(cb=>cb.dataset.key).join(", ");
+
+  document.getElementById("emailBulkAddress").value=email;
+  document.getElementById("emailBulkDates").value=dates;
+  document.getElementById("emailBulk").submit();
+
   const msg=document.getElementById("bulkSaved");
   msg.textContent=`Ingeschreven voor ${checks.length} dag(en) ✔`;
   msg.style.display="block";
+
   setTimeout(()=>msg.style.display="none",2500);
 }
 
-/* ---------- START ---------- */
+/* ---------- INIT ---------- */
 render();
 buildPicklist();
 </script>
