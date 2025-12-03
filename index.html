@@ -14,14 +14,14 @@
   }
 
   :root{
-    --orange:#F38536; /* oranje vlakken/knoppen */
-    --text:#FF6A00;   /* letterkleur */
-    --bg:#FFE1CB;     /* paginabackground */
+    --orange:#F38536; /* knoppen & accenten */
+    --text:#FF6A00;   /* tekstkleur */
+    --bg:#FFE1CB;     /* basis achtergrond */
   }
 
   *{margin:0;padding:0;box-sizing:border-box}
 
-  /* ---------- PAGINA ---------- */
+  /* ----------------- BODY + BACKGROUND ----------------- */
   body{
     background:var(--bg);
     color:var(--text);
@@ -30,24 +30,24 @@
     padding:40px 24px;
     position:relative;
 
-    /* Achtergrondfoto */
+    /* jouw track foto */
     background-image:url("images/track.jpg");
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
   }
 
-  /* 70% overlay boven de foto, onder de content */
+  /* 70% overlay */
   body::before{
     content:"";
-    position:fixed; /* fixed zodat overlay de viewport vult bij scroll */
+    position:fixed;
     inset:0;
-    background:rgba(255,225,203,0.7); /* #FFE1CB met 70% opacity */
-    pointer-events:none;
+    background:rgba(255,225,203,0.7); /* #FFE1CB op 70% */
     z-index:0;
+    pointer-events:none;
   }
 
-  /* ---------- HAMBURGER MENU ---------- */
+  /* ----------------- HAMBURGER MENU ----------------- */
   .menu-overlay{
     position:fixed; inset:0;
     background:rgba(0,0,0,.55);
@@ -64,7 +64,7 @@
     display:flex; flex-direction:column;
     justify-content:space-between;
     cursor:pointer;
-    z-index:10; /* boven overlay */
+    z-index:10;
   }
   .hamburger div{
     height:4px; background:#000; border-radius:3px;
@@ -77,25 +77,34 @@
     backdrop-filter:blur(6px);
     padding:40px 20px;
     transition:.35s cubic-bezier(.17,.67,.5,1.29);
-    display:flex; flex-direction:column; gap:18px;
+    display:flex; flex-direction:column;
+    gap:18px;
     z-index:9;
   }
-  .menu.show{ left:0; }
-  .menu-logo img{ width:120px; margin:0 auto 20px; display:block; }
+  .menu.show{ left:0 }
+
+  .menu-logo img{
+    width:120px; display:block; margin:0 auto 20px;
+  }
+
   .menu a{
-    font-size:22px; text-decoration:none; font-weight:600; color:#fff;
+    font-size:22px;
+    color:#fff;
+    font-weight:600;
+    text-decoration:none;
   }
   .menu a:hover{ color:var(--orange); }
 
-  /* ---------- CONTENT ---------- */
+  /* ----------------- CONTENT ----------------- */
   .content{
-    position:relative; z-index:1; /* boven de 70% overlay */
+    position:relative; 
+    z-index:1;
     max-width:900px;
     margin:120px auto;
     text-align:center;
   }
 
-  /* FADE-IN animatie voor het logo (titel) */
+  /* Fade-in animatie */
   @keyframes fadeUp {
     from { opacity:0; transform:translateY(20px); }
     to   { opacity:1; transform:translateY(0); }
@@ -104,48 +113,50 @@
   h1{
     font-size:64px;
     font-style:italic;
-    color:var(--text);
-    margin-bottom:10px;
     animation:fadeUp 1.2s ease-out forwards;
+    color:var(--text);
   }
 
   .subtitle{
     font-size:20px;
-    opacity:.9;
     margin-top:20px;
     line-height:1.4;
-    position:relative; z-index:1;
+    opacity:.9;
   }
 
-  .cta{ margin-top:40px; position:relative; z-index:1; }
+  .cta{ margin-top:40px; }
 
   .btn{
     display:inline-block;
     padding:14px 26px;
     background:var(--orange);
-    color:#fff;
+    color:white;
     border-radius:9999px;
+    font-weight:800;
     text-decoration:none;
     font-size:22px;
-    font-weight:800;
     transition:.2s;
   }
   .btn:hover{ transform:translateY(-3px); }
+
 </style>
 
 <script>
-  function toggleMenu(){
-    document.getElementById("menu").classList.toggle("show");
-    document.getElementById("menuOverlay").classList.toggle("show");
-  }
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+  document.getElementById("menuOverlay").classList.toggle("show");
+}
 </script>
-</head>
 
+</head>
 <body>
 
 <!-- MENU -->
 <div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
-<div class="hamburger" onclick="toggleMenu()"><div></div><div></div><div></div></div>
+
+<div class="hamburger" onclick="toggleMenu()">
+  <div></div><div></div><div></div>
+</div>
 
 <nav id="menu" class="menu">
   <div class="menu-logo"><img src="images/logo.png" alt="RNX Run Club"></div>
@@ -164,8 +175,8 @@
 
   <p class="subtitle">
     Samen lopen, samen groeien.<br>
-    Elke zondag een social run, schema's voor elk niveau<br>
-    en een warme community.
+    Elke zondag een social run, schema’s voor elk niveau<br>
+    én een warme community.
   </p>
 
   <div class="cta">
