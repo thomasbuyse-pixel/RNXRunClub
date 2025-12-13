@@ -581,7 +581,9 @@ function render(){
       const thisKey = dateKey(year, currentMonth, day);
       if(specialEvents[thisKey]){
         specialEvents[thisKey].forEach(ev => {
-          cell.appendChild(makeChip(ev.title, false, ev.badge || "EVENT"));
+          const chip = makeChip(ev.title, false, ev.badge || "EVENT");
+          if(ev.external) chip.classList.add('event--external');
+          cell.appendChild(chip);
         });
       }
 
@@ -658,7 +660,7 @@ function openDetail(dateObj){
   // include any special events for this date
   const special = specialEvents[currentDetailKey];
   if(special){
-    special.forEach(ev=> items.push({ type: "event", title: ev.title, desc: ev.desc }));
+    special.forEach(ev=> items.push({ type: ev.external?"external":"event", title: ev.title, desc: ev.desc }));
   }
 
   if(document.getElementById("togglePlan10k").checked && idx>=0 && idx<plan10k.length && (dow===1||dow===3)){
@@ -686,6 +688,7 @@ function openDetail(dateObj){
       let pillLabel = "SCHEMA";
       if(ev.type==="social"){ pillClass = "pill-social"; pillLabel = "SOCIAL"; }
       else if(ev.type==="event"){ pillClass = "pill-event"; pillLabel = "EVENT"; }
+      else if(ev.type==="external"){ pillClass = "pill-external"; pillLabel = "EXTERN"; }
       tag.className = "pill " + pillClass;
       tag.textContent = pillLabel;
 
