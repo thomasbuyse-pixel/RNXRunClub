@@ -30,55 +30,37 @@
 
   /* HAMBURGER MENU */
   .menu-overlay{
-    position:fixed; inset:0;
-    background:rgba(0,0,0,.55);
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.55);
     backdrop-filter:blur(4px);
-    opacity:0; pointer-events:none;
-    transition:.3s;
+    opacity:0;
+    pointer-events:none;
+    transition:0.3s;
     z-index:8;
   }
-  .menu-overlay.show{
-    opacity:1; pointer-events:all;
-  }
+  .menu-overlay.show{ opacity:1; pointer-events:all; }
 
   .hamburger{
-    position:fixed; top:20px; left:20px;
-    width:36px; height:24px;
-    display:flex; flex-direction:column;
+    position:fixed;
+    top:20px;
+    left:20px;
+    width:36px;
+    height:24px;
+    display:flex;
+    flex-direction:column;
     justify-content:space-between;
     cursor:pointer;
     z-index:10;
   }
-  .hamburger div{
-    height:4px; background:#000; border-radius:3px;
-  }
+  .hamburger div{ height:4px; background:#000; border-radius:3px; }
 
-  .menu{
-    position:fixed; left:-260px; top:0;
-    width:240px; height:100%;
-    background:rgba(0,0,0,.9);
-    backdrop-filter:blur(6px);
-    padding:40px 20px;
-    transition:.35s cubic-bezier(.17,.67,.5,1.29);
-    display:flex; flex-direction:column;
-    gap:18px;
-    z-index:9;
-  }
-  .menu.show{ left:0 }
+  .menu{ position:fixed; left:-260px; top:0; width:240px; height:100%; background:rgba(0,0,0,0.9); backdrop-filter:blur(6px); padding:40px 20px; transition:.35s cubic-bezier(.17,.67,.5,1.29); display:flex; flex-direction:column; gap:18px; z-index:9; }
+  .menu.show{ left:0; }
 
-  .menu-logo img{
-    width:120px; margin:0 auto 20px;
-  }
-
-  .menu a{
-    font-size:22px;
-    color:white;
-    font-weight:600;
-    text-decoration:none;
-  }
-  .menu a:hover{
-    color:var(--orange);
-  }
+  .menu-logo img{ width:120px; margin:0 auto 20px; }
+  .menu a{ font-size:22px; color:white; font-weight:600; text-decoration:none; }
+  .menu a:hover{ color:var(--orange); }
 
   /* CONTENT */
   .content{
@@ -166,7 +148,7 @@ function toggleMenu(){
   <a href="over.html">Over ons</a>
   <a href="events.html">Events</a>
   <a href="schema.html">Schema</a>
-  <a href="shop.html">Shop</a>
+  <a href="Shop.html">Shop</a>
   <a href="info.html">Info</a>
   <a href="contact.html">Contact</a>
   <a href="sponsors.html">Sponsors</a>
@@ -180,21 +162,21 @@ function toggleMenu(){
   <div class="grid">
 
     <div class="card">
-      <img src="images/shirt.png" alt="T-shirt">
+      <img src="images/T-shirt.JPG" alt="T-shirt">
       <h3>RNX T-shirt</h3>
       <p>Ademende sportstof — unisex.</p>
       <a class="btn" href="#">Binnenkort</a>
     </div>
 
     <div class="card">
-      <img src="images/hoodie.png" alt="Hoodie">
+      <img src="images/Hoodie.JPG" alt="Hoodie">
       <h3>RNX Hoodie</h3>
       <p>Heerlijk warm voor winterruns.</p>
       <a class="btn" href="#">Binnenkort</a>
     </div>
 
     <div class="card">
-      <img src="images/cap.png" alt="Cap">
+      <img src="images/Cap.jpeg" alt="Cap">
       <h3>Running Cap</h3>
       <p>Beschermt tegen zon & regen.</p>
       <a class="btn" href="#">Binnenkort</a>
@@ -205,5 +187,4 @@ function toggleMenu(){
 
 </body>
 </html>
-
 
