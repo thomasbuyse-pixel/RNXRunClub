@@ -19,6 +19,7 @@
     --bg:#FFE1CB;
     --chipSocial:#ffbf90;
     --chipPlan:#cfe0ff;
+    --chipEvent:#e8d1ff;
   }
 
   *{margin:0;padding:0;box-sizing:border-box}
@@ -233,6 +234,17 @@
   }
   .pill-social{background:var(--chipSocial);}
   .pill-plan{background:var(--chipPlan);}
+  .pill-event{background:var(--chipEvent);}
+  .pill-external{background:white;color:#111;border:1px solid rgba(0,0,0,0.06);opacity:0.9}
+
+  /* External event chip (calendar) - subtle white with black text */
+  .event.event--external{
+    background: white;
+    color: #111;
+    border:1px solid rgba(0,0,0,0.06);
+    opacity:0.9;
+  }
+  .event.event--external .badge{ background:transparent;color:#111;border:1px solid rgba(0,0,0,0.06); }
 
   .detail footer{
     border-top:1px solid #eee;
@@ -382,7 +394,7 @@ function toggleMenu(){
   <a href="over.html">Over ons</a>
   <a href="events.html">Events</a>
   <a href="schema.html">Schema</a>
-  <a href="shop.html">Shop</a>
+  <a href="Shop.html">Shop</a>
   <a href="info.html">Info</a>
   <a href="contact.html">Contact</a>
   <a href="sponsors.html">Sponsors</a>
@@ -391,7 +403,7 @@ function toggleMenu(){
 <!-- CONTENT -->
 <div class="content">
   <h1>Kalender 2026</h1>
-  <p class="lead">Klik op een dag voor details — elke zondag Social Club Run.</p>
+  <p class="lead">Klik op een dag voor details — elke zondag Social Club Run. Vanaf 01/01/2026 ook op woensdag.</p>
 
   <div id="monthBar" class="month-bar"></div>
 
@@ -498,6 +510,17 @@ const STRdesc=[
   "20–25 min lopen → 5 km"
 ];
 
+/* ---------- SPECIAL EVENTS ---------- */
+const specialEvents = {};
+// Keys use the same dateKey(y,m,d) format. Add events for January 2026:
+specialEvents[dateKey(2026,0,7)] = [{ title: "Ladies Run", desc: "Ladies-only 5 km — Start 19:30", badge: "EVENT" }];
+specialEvents[dateKey(2026,0,12)] = [{ title: "Bommels Run", desc: "Bommels run — gezellig en ontspannen (meet 09:00)", badge: "EVENT" }];
+
+// External events (subtle/less-noticeable)
+specialEvents[dateKey(2026,0,25)] = [{ title: "Cadzand Marathon", desc: "Cadzand Marathon — externe organisatie", badge: "EXT", external: true }];
+specialEvents[dateKey(2026,2,8)]  = [{ title: "Bashir Run", desc: "Bashir Run — externe organisatie", badge: "EXT", external: true }];
+specialEvents[dateKey(2026,3,26)] = [{ title: "Flandrien Run", desc: "Flandrien Run — externe organisatie", badge: "EXT", external: true }];
+
 function pad(n){return String(n).padStart(2,"0")}
 function dateKey(y,m,d){return `${y}-${pad(m+1)}-${pad(d)}`}
 
@@ -547,9 +570,19 @@ function render(){
       num.textContent=day;
       cell.appendChild(num);
 
-      /* SOCIAL RUNS */
-      if(sundays[currentMonth].includes(day)){
-        cell.appendChild(makeChip("Social Run — 5 km (09:00)",true));
+      /* SOCIAL RUNS (Sundays + Wednesdays from 01/01/2026) */
+      const dtSocial = new Date(year, currentMonth, day);
+      const isWednesdaySocial = dtSocial >= new Date(2026,0,1) && dtSocial.getDay()===3; // 3 = Wed
+      if(sundays[currentMonth].includes(day) || isWednesdaySocial){
+        const socialText = isWednesdaySocial ? "Social Run — 5 km (19:30)" : "Social Run — 5 km (09:00)";
+        cell.appendChild(makeChip(socialText,true));
+      }
+
+      const thisKey = dateKey(year, currentMonth, day);
+      if(specialEvents[thisKey]){
+        specialEvents[thisKey].forEach(ev => {
+          cell.appendChild(makeChip(ev.title, false, ev.badge || "EVENT"));
+        });
       }
 
       /* SCHEMAS */
@@ -572,12 +605,12 @@ function render(){
   }
 }
 
-function makeChip(text,isSocial){
+function makeChip(text,isSocial,badgeText){
   const d=document.createElement("div");
   d.className="event";
   const b=document.createElement("span");
   b.className="badge";
-  b.textContent=isSocial?"SOCIAL":"SCHEMA";
+  b.textContent = badgeText || (isSocial?"SOCIAL":"SCHEMA");
   d.appendChild(b);
   d.append(" "+text);
   return d;
@@ -605,18 +638,27 @@ function openDetail(dateObj){
   const body=document.getElementById("detailBody");
   body.innerHTML="";
 
+  const dateKeyObj = new Date(y,m,d);
+  const isWednesdaySocial = dateKeyObj >= new Date(2026,0,1) && dateKeyObj.getDay()===3;
   const isSunday=sundays[m].includes(d);
+  const isSocial = isSunday || isWednesdaySocial;
   const idx=weekIndexFor(dateObj);
   const dow=(dateObj.getDay()+6)%7;
 
   const items=[];
 
-  if(isSunday){
+  if(isSocial){
     items.push({
       type:"social",
       title:"Social Club Run",
-      desc:"5 km @ 7:00/km — Start 09:00"
+      desc: isWednesdaySocial ? "5 km @ 7:00/km — Start 19:30" : "5 km @ 7:00/km — Start 09:00"
     });
+  }
+
+  // include any special events for this date
+  const special = specialEvents[currentDetailKey];
+  if(special){
+    special.forEach(ev=> items.push({ type: "event", title: ev.title, desc: ev.desc }));
   }
 
   if(document.getElementById("togglePlan10k").checked && idx>=0 && idx<plan10k.length && (dow===1||dow===3)){
@@ -640,8 +682,12 @@ function openDetail(dateObj){
       box.className="item";
 
       const tag=document.createElement("span");
-      tag.className="pill "+(ev.type==="social"?"pill-social":"pill-plan");
-      tag.textContent=ev.type==="social"?"SOCIAL":"SCHEMA";
+      let pillClass = "pill-plan";
+      let pillLabel = "SCHEMA";
+      if(ev.type==="social"){ pillClass = "pill-social"; pillLabel = "SOCIAL"; }
+      else if(ev.type==="event"){ pillClass = "pill-event"; pillLabel = "EVENT"; }
+      tag.className = "pill " + pillClass;
+      tag.textContent = pillLabel;
 
       const h=document.createElement("h4");
       h.textContent=ev.title;
@@ -654,7 +700,7 @@ function openDetail(dateObj){
     });
   }
 
-  if(isSunday){
+  if(isSocial){
     document.getElementById("inschrijfBtn").style.display="inline-block";
   }
 
@@ -721,13 +767,39 @@ function allSundayEntries(){
   return arr;
 }
 
+/* Also include Wednesdays (from 01/01/2026) as social run entries for signups */
+function allSocialEntries(){
+  const arr=[];
+  const startWed = new Date(2026,0,1);
+  for(let m=0;m<12;m++){
+    // include existing Sundays
+    sundays[m].forEach(d=>{
+      arr.push({ key:dateKey(year,m,d), label:`${d} ${monthNames[m]} ${year}` });
+    });
+
+    // include Wednesdays from start date
+    const last = new Date(year,m+1,0).getDate();
+    for(let d=1; d<=last; d++){
+      const dt = new Date(year,m,d);
+      if(dt >= startWed && dt.getDay()===3){
+        arr.push({ key:dateKey(year,m,d), label:`${d} ${monthNames[m]} ${year}` });
+      }
+    }
+  }
+  // dedupe by key and keep order
+  const seen=new Set();
+  const out=[];
+  arr.forEach(e=>{ if(!seen.has(e.key)){ seen.add(e.key); out.push(e); } });
+  return out;
+}
+
 function buildPicklist(){
   const pick=document.getElementById("picklist");
   pick.innerHTML="";
 
   const db=JSON.parse(localStorage.getItem("rnx_signups")||"{}");
 
-  allSundayEntries().forEach(e=>{
+  allSocialEntries().forEach(e=>{
     const row=document.createElement("label");
     const cb=document.createElement("input");
     cb.type="checkbox";
