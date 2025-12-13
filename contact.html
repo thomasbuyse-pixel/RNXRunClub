@@ -32,56 +32,37 @@
 
   /* HAMBURGER MENU */
   .menu-overlay{
-    position:fixed; inset:0;
-    background:rgba(0,0,0,.55);
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.55);
     backdrop-filter:blur(4px);
-    opacity:0; pointer-events:none;
-    transition:.3s;
+    opacity:0;
+    pointer-events:none;
+    transition:0.3s;
     z-index:8;
   }
-  .menu-overlay.show{
-    opacity:1; pointer-events:all;
-  }
+  .menu-overlay.show{ opacity:1; pointer-events:all; }
 
   .hamburger{
-    position:fixed; top:20px; left:20px;
-    width:36px; height:24px;
-    display:flex; flex-direction:column;
+    position:fixed;
+    top:20px;
+    left:20px;
+    width:36px;
+    height:24px;
+    display:flex;
+    flex-direction:column;
     justify-content:space-between;
     cursor:pointer;
     z-index:10;
   }
-  .hamburger div{
-    height:4px; background:#000; border-radius:3px;
-  }
+  .hamburger div{ height:4px; background:#000; border-radius:3px; }
 
-  .menu{
-    position:fixed; left:-260px; top:0;
-    width:240px; height:100%;
-    background:rgba(0,0,0,.9);
-    backdrop-filter:blur(6px);
-    padding:40px 20px;
-    transition:.35s cubic-bezier(.17,.67,.5,1.29);
-    display:flex; flex-direction:column;
-    gap:18px;
-    z-index:9;
-  }
-  .menu.show{ left:0 }
+  .menu{ position:fixed; left:-260px; top:0; width:240px; height:100%; background:rgba(0,0,0,0.9); backdrop-filter:blur(6px); padding:40px 20px; transition:.35s cubic-bezier(.17,.67,.5,1.29); display:flex; flex-direction:column; gap:18px; z-index:9; }
+  .menu.show{ left:0; }
 
-  .menu-logo img{
-    width:120px;
-    margin:0 auto 20px;
-  }
-
-  .menu a{
-    font-size:22px;
-    text-decoration:none;
-    font-weight:600;
-    color:white;
-  }
-  .menu a:hover{
-    color:var(--orange);
-  }
+  .menu-logo img{ width:120px; margin:0 auto 20px; display:block; }
+  .menu a{ font-size:22px; text-decoration:none; font-weight:600; color:white; }
+  .menu a:hover{ color:var(--orange); }
 
   /* CONTENT */
   .content{
@@ -94,6 +75,16 @@
     font-size:48px;
     font-style:italic;
     margin-bottom:30px;
+  }
+
+  .hero img{
+    width:100%;
+    max-width:600px;
+    display:block;
+    margin:20px auto 0;
+    border-radius:10px;
+    border:2px solid var(--orange);
+    box-shadow:0 6px 16px rgba(0,0,0,.06);
   }
 
   .grid{
@@ -193,7 +184,7 @@ function toggleMenu(){
   <a href="over.html">Over ons</a>
   <a href="events.html">Events</a>
   <a href="schema.html">Schema</a>
-  <a href="shop.html">Shop</a>
+  <a href="Shop.html">Shop</a>
   <a href="info.html">Info</a>
   <a href="contact.html">Contact</a>
   <a href="sponsors.html">Sponsors</a>
@@ -203,15 +194,17 @@ function toggleMenu(){
 <div class="content">
   <h1>Contacteer ons</h1>
 
+
   <div class="grid">
 
     <!-- FORM -->
     <div class="card">
       <h2>Stuur ons een bericht</h2>
 
-      <form action="https://formsubmit.co/rnx_run_club@hotmail.com" method="POST">
+      <form action="https://formsubmit.co/thomas.buyse@hotmail.be" method="POST">
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="_subject" value="Nieuw bericht via RNX website">
+        <input type="hidden" name="_cc" value="rnx_run_club@hotmail.com">
 
         <input type="text" name="Naam" placeholder="Naam" required>
         <input type="email" name="Email" placeholder="E-mail" required>
@@ -238,15 +231,21 @@ function toggleMenu(){
       <p style="opacity:.8;margin-bottom:10px;">Startplaats: T Rosco Ronse</p>
 
       <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2558.553775940619!2d3.600151615721196!3d50.7546309795177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c33350d0e7b139%3A0xa3dff4d54df32a49!2s't%20Rosco!5e0!3m2!1snl!2sbe!4v1700000000000"
+        src="https://www.google.com/maps/place/Sportdienst+Ronse+'t+Rosco/@50.7356335,3.5834723,17z/data=!4m6!3m5!1s0x47c36dbcd6732c89:0x7f66fe7a14317c9b!8m2!3d50.7351497!4d3.5868615!16s%2Fg%2F1vc_phxw?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D"
         allowfullscreen="" loading="lazy">
       </iframe>
     </div>
 
   </div>
+
+  <div class="hero">
+    <img src="images/Rosco.png" alt="RNX Run Club">
+  </div>
+
 </div>
 
 </body>
 </html>
+
 
 
