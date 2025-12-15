@@ -620,13 +620,6 @@ function makeChip(text,isSocial,badgeText){
 /* ---------- DETAIL PANEL ---------- */
 let currentDetailKey=null;
 
-function resetDetailFooter(){
-  document.getElementById("inschrijfBtn").style.display="none";
-  document.getElementById("signupForm").classList.remove("show");
-  document.getElementById("okMsg").style.display="none";
-  document.getElementById("signupEmail").value="";
-}
-
 function openDetail(dateObj){
   const y=dateObj.getFullYear(),m=dateObj.getMonth(),d=dateObj.getDate();
   currentDetailKey=dateKey(y,m,d);
@@ -702,11 +695,7 @@ function openDetail(dateObj){
     });
   }
 
-  if(isSocial){
-    document.getElementById("inschrijfBtn").style.display="inline-block";
-  }
-
-  document.getElementById("detailOverlay").classList.add("show");
+    document.getElementById("detailOverlay").classList.add("show");
   document.getElementById("detail").classList.add("show");
 }
 
@@ -717,135 +706,6 @@ function closeDetail(){
   resetDetailFooter();
 }
 
-/* ---------- SIGNUP (DETAIL PANEL) ---------- */
-function validateEmail(email){
-  return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
-}
-
-function setSignup(key,email){
-  let db={};
-  try{db=JSON.parse(localStorage.getItem("rnx_signups")||"{}");}catch(_){}
-  db[key]=email;
-  localStorage.setItem("rnx_signups",JSON.stringify(db));
-}
-
-function saveSignup(e){
-  e.preventDefault();
-  const email=document.getElementById("signupEmail").value.trim();
-
-  if(!validateEmail(email)){
-    alert("Ongeldig e-mailadres");
-    return false;
-  }
-
-  setSignup(currentDetailKey,email);
-
-  document.getElementById("emailDetailDate").value=currentDetailKey;
-  document.getElementById("emailDetailEmail").value=email;
-  document.getElementById("emailDetail").submit();
-
-  document.getElementById("signupForm").classList.remove("show");
-  document.getElementById("okMsg").style.display="inline";
-
-  return false;
-}
-
-function toggleSignup(){
-  document.getElementById("okMsg").style.display="none";
-  document.getElementById("signupForm").classList.toggle("show");
-}
-
-/* ---------- GENERAL SIGNUP ---------- */
-function allSundayEntries(){
-  const arr=[];
-  for(let m=0;m<12;m++){
-    sundays[m].forEach(d=>{
-      arr.push({
-        key:dateKey(year,m,d),
-        label:`${d} ${monthNames[m]} ${year}`
-      });
-    });
-  }
-  return arr;
-}
-
-/* Also include Wednesdays (from 01/01/2026) as social run entries for signups */
-function allSocialEntries(){
-  const arr=[];
-  const startWed = new Date(2026,0,1);
-  for(let m=0;m<12;m++){
-    // include existing Sundays
-    sundays[m].forEach(d=>{
-      arr.push({ key:dateKey(year,m,d), label:`${d} ${monthNames[m]} ${year}` });
-    });
-
-    // include Wednesdays from start date
-    const last = new Date(year,m+1,0).getDate();
-    for(let d=1; d<=last; d++){
-      const dt = new Date(year,m,d);
-      if(dt >= startWed && dt.getDay()===3){
-        arr.push({ key:dateKey(year,m,d), label:`${d} ${monthNames[m]} ${year}` });
-      }
-    }
-  }
-  // dedupe by key and keep order
-  const seen=new Set();
-  const out=[];
-  arr.forEach(e=>{ if(!seen.has(e.key)){ seen.add(e.key); out.push(e); } });
-  return out;
-}
-
-function buildPicklist(){
-  const pick=document.getElementById("picklist");
-  pick.innerHTML="";
-
-  const db=JSON.parse(localStorage.getItem("rnx_signups")||"{}");
-
-  allSocialEntries().forEach(e=>{
-    const row=document.createElement("label");
-    const cb=document.createElement("input");
-    cb.type="checkbox";
-    cb.dataset.key=e.key;
-    if(db[e.key]) cb.checked=true;
-
-    const txt=document.createElement("span");
-    txt.textContent=e.label+" — Social Club Run";
-
-    row.append(cb,txt);
-    pick.appendChild(row);
-  });
-}
-
-function saveBulkSignup(){
-  const email=document.getElementById("bulkEmail").value.trim();
-  if(!validateEmail(email)){
-    alert("Ongeldig e-mailadres");
-    return;
-  }
-
-  const checks=[...document.querySelectorAll('#picklist input:checked')];
-  if(checks.length===0){
-    alert("Selecteer minstens 1 datum");
-    return;
-  }
-
-  checks.forEach(cb=>{
-    setSignup(cb.dataset.key,email);
-  });
-
-  const dates=checks.map(cb=>cb.dataset.key).join(", ");
-
-  document.getElementById("emailBulkAddress").value=email;
-  document.getElementById("emailBulkDates").value=dates;
-  document.getElementById("emailBulk").submit();
-
-  const msg=document.getElementById("bulkSaved");
-  msg.textContent=`Ingeschreven voor ${checks.length} dag(en) ✔`;
-  msg.style.display="block";
-
-  setTimeout(()=>msg.style.display="none",2500);
-}
-
 /* ---------- INIT ---------- */
 render();
 buildPicklist();
@@ -853,6 +713,7 @@ buildPicklist();
 
 </body>
 </html>
+
 
 
 
