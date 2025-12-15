@@ -389,7 +389,7 @@ function toggleMenu(){
 <div class="hamburger" onclick="toggleMenu()"><div></div><div></div><div></div></div>
 
 <nav id="menu" class="menu">
-  <div class="menu-logo"><img src="Logo.png" alt="RNX Run Club"></div>
+  <div class="menu-logo"><img src="images/logo.png" alt="RNX Run Club"></div>
   <a href="index.html">Home</a>
   <a href="over.html">Over ons</a>
   <a href="events.html">Events</a>
@@ -420,29 +420,7 @@ function toggleMenu(){
     <div id="grid" class="cal-grid"></div>
   </section>
 
-  <!-- GENERAL SIGNUP -->
-  <section class="signup-block">
-    <h2>Algemene Inschrijving</h2>
-    <p>Selecteer één of meerdere zondagen waarop je wil meelopen.</p>
-
-    <div id="picklist" class="picklist"></div>
-
-    <div class="signup-row">
-      <input id="bulkEmail" type="email" placeholder="jouw@email.be">
-      <button onclick="saveBulkSignup()">Inschrijven</button>
-    </div>
-
-    <div id="bulkSaved" class="saved-msg">Ingeschreven ✔</div>
-
-    <!-- HIDDEN FORM FOR MAIL -->
-    <form id="emailBulk" action="https://formsubmit.co/rnx_run_club@hotmail.com" method="POST" style="display:none;">
-      <input type="hidden" name="_subject" value="Algemene inschrijving — RNX Run Club">
-      <input type="hidden" name="Email" id="emailBulkAddress">
-      <input type="hidden" name="Datums" id="emailBulkDates">
-      <input type="hidden" name="_captcha" value="false">
-    </form>
-
-  </section>
+  <!-- Signup removed: calendar and events remain -->
 </div>
 
 <!-- DETAIL PANEL -->
@@ -460,22 +438,7 @@ function toggleMenu(){
     <a href="schema.html#str" class="link-btn">Schema Start to Run</a>
     <a href="schema.html#10k" class="link-btn">Schema 10 km</a>
 
-    <button id="inschrijfBtn" class="link-btn" style="background:#222;display:none" onclick="toggleSignup()">Inschrijven</button>
-
-    <form id="signupForm" class="signup" onsubmit="return saveSignup(event)">
-      <input id="signupEmail" type="email" required placeholder="e-mail">
-      <button type="submit">OK</button>
-    </form>
-
-    <span id="okMsg" class="okmsg">✔ Ingeschreven</span>
-
-    <!-- HIDDEN EMAIL FORM FOR DETAIL SIGNUP -->
-    <form id="emailDetail" action="https://formsubmit.co/rnx_run_club@hotmail.com" method="POST" style="display:none;">
-      <input type="hidden" name="_subject" value="Nieuwe inschrijving — RNX Event">
-      <input type="hidden" id="emailDetailDate" name="Datum">
-      <input type="hidden" id="emailDetailEmail" name="Email">
-      <input type="hidden" name="_captcha" value="false">
-    </form>
+    <!-- Signup controls removed from detail footer -->
 
     <button class="close-btn" onclick="closeDetail()">Sluiten</button>
   </footer>
@@ -513,6 +476,7 @@ const STRdesc=[
 /* ---------- SPECIAL EVENTS ---------- */
 const specialEvents = {};
 // Keys use the same dateKey(y,m,d) format. Add events for January 2026:
+specialEvents[dateKey(2026,0,7)] = [{ title: "Ladies Run", desc: "Ladies-only 5 km — Start 19:30", badge: "EVENT" }];
 specialEvents[dateKey(2026,0,12)] = [{ title: "Bommels Run", desc: "Bommels run — gezellig en ontspannen (meet 09:00)", badge: "EVENT" }];
 
 // External events (subtle/less-noticeable)
@@ -620,6 +584,10 @@ function makeChip(text,isSocial,badgeText){
 /* ---------- DETAIL PANEL ---------- */
 let currentDetailKey=null;
 
+function resetDetailFooter(){
+  // signup UI removed; no footer reset required
+}
+
 function openDetail(dateObj){
   const y=dateObj.getFullYear(),m=dateObj.getMonth(),d=dateObj.getDate();
   currentDetailKey=dateKey(y,m,d);
@@ -695,7 +663,9 @@ function openDetail(dateObj){
     });
   }
 
-    document.getElementById("detailOverlay").classList.add("show");
+  // signup action removed
+
+  document.getElementById("detailOverlay").classList.add("show");
   document.getElementById("detail").classList.add("show");
 }
 
@@ -706,15 +676,12 @@ function closeDetail(){
   resetDetailFooter();
 }
 
+/* ---------- SIGNUP (DETAIL PANEL) ---------- */
+// Signup-related functions removed per request.
+
 /* ---------- INIT ---------- */
 render();
-buildPicklist();
 </script>
 
 </body>
 </html>
-
-
-
-
-
