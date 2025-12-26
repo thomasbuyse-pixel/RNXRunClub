@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Events — RNX Run Club</title>
+<title>Kalender — RNX Run Club</title>
 
 <style>
   @font-face{
@@ -42,9 +42,7 @@
     transition:.3s;
     z-index:8;
   }
-  .menu-overlay.show{
-    opacity:1; pointer-events:all;
-  }
+  .menu-overlay.show{ opacity:1; pointer-events:all; }
 
   .hamburger{
     position:fixed; top:20px; left:20px;
@@ -54,9 +52,7 @@
     cursor:pointer;
     z-index:10;
   }
-  .hamburger div{
-    height:4px; background:#000; border-radius:3px;
-  }
+  .hamburger div{ height:4px; background:#000; border-radius:3px; }
 
   .menu{
     position:fixed; left:-260px; top:0;
@@ -148,18 +144,10 @@
     transition:.2s;
     color:white;
   }
-  .day:hover{
-    background:rgba(255,255,255,.25);
-  }
-  .day:nth-child(7n){
-    border-right:none;
-  }
+  .day:hover{ background:rgba(255,255,255,.25); }
+  .day:nth-child(7n){ border-right:none; }
 
-  .day-num{
-    font-weight:800;
-    margin-bottom:4px;
-    font-size:14px;
-  }
+  .day-num{ font-weight:800; margin-bottom:4px; font-size:14px; }
 
   .event{
     margin-top:6px;
@@ -178,42 +166,25 @@
     margin-right:4px;
   }
 
-  /* DETAIL PANEL */
-  .detail-overlay{
-    position:fixed;inset:0;
-    background:rgba(0,0,0,.55);
-    backdrop-filter:blur(2px);
-    opacity:0;pointer-events:none;
-    transition:.25s;
-    z-index:20;
-  }
-  .detail-overlay.show{
-    opacity:1;pointer-events:all;
-  }
-
-  .detail{
-    position:fixed;right:-420px;top:0;
-    width:380px;height:100%;
+  .event.event--external{
     background:white;
-    color:#333;
-    display:flex;flex-direction:column;
-    transition:.35s cubic-bezier(.17,.67,.5,1.29);
-    z-index:21;
+    color:#111;
+    border:1px solid rgba(0,0,0,0.06);
+    opacity:0.9;
   }
+  .event.event--external .badge{ background:transparent;color:#111;border:1px solid rgba(0,0,0,0.06); }
+
+  /* DETAIL PANEL */
+  .detail-overlay{ position:fixed;inset:0; background:rgba(0,0,0,.55); backdrop-filter:blur(2px); opacity:0;pointer-events:none; transition:.25s; z-index:20; }
+  .detail-overlay.show{ opacity:1;pointer-events:all; }
+
+  .detail{ position:fixed;right:-420px;top:0; width:380px;height:100%; background:white; color:#333; display:flex;flex-direction:column; transition:.35s cubic-bezier(.17,.67,.5,1.29); z-index:21; }
   .detail.show{right:0}
 
-  .detail header{
-    padding:18px;
-    border-bottom:1px solid #eee;
-  }
-  .detail header h3{
-    margin:0;font-size:22px;color:var(--text);
-  }
+  .detail header{ padding:18px; border-bottom:1px solid #eee; }
+  .detail header h3{ margin:0;font-size:22px;color:var(--text); }
 
-  .detail .body{
-    padding:20px 18px;
-    overflow:auto;
-  }
+  .detail .body{ padding:20px 18px; overflow:auto; }
 
   .item{
     border:1px solid #eee;
@@ -237,147 +208,147 @@
   .pill-event{background:var(--chipEvent);}
   .pill-external{background:white;color:#111;border:1px solid rgba(0,0,0,0.06);opacity:0.9}
 
-  /* External event chip (calendar) - subtle white with black text */
-  .event.event--external{
-    background: white;
-    color: #111;
-    border:1px solid rgba(0,0,0,0.06);
-    opacity:0.9;
-  }
-  .event.event--external .badge{ background:transparent;color:#111;border:1px solid rgba(0,0,0,0.06); }
+  .detail footer{ border-top:1px solid #eee; padding:14px 18px; display:flex; flex-wrap:wrap; gap:10px; }
+  .link-btn{ padding:10px 14px; background:var(--orange); color:white; border-radius:9999px; font-weight:900; text-decoration:none; cursor:pointer; border:none; }
+  .link-btn:hover{ transform:translateY(-2px); }
 
-  .detail footer{
-    border-top:1px solid #eee;
-    padding:14px 18px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-  }
-
-  .link-btn{
-    padding:10px 14px;
-    background:var(--orange);
-    color:white;
-    border-radius:9999px;
-    font-weight:900;
-    text-decoration:none;
-    cursor:pointer;
-    border:none;
-  }
-
-  .link-btn:hover{
-    transform:translateY(-2px);
-  }
-
-  .signup{
-    display:none;
-    gap:8px;
-    margin-left:auto;
-  }
-  .signup.show{
-    display:flex;
-  }
-
-  .signup input{
-    padding:8px 12px;
-    border-radius:9999px;
-    border:1px solid #ddd;
-  }
-
-  .okmsg{
-    display:none;
-    color:#16a34a;
-    font-weight:700;
-    font-size:13px;
-    margin-left:auto;
-  }
-
-  .close-btn{
-    padding:8px 12px;
-    background:#222;
-    color:white;
-    border:none;
-    border-radius:9999px;
-    font-weight:800;
-    margin-left:auto;
-    cursor:pointer;
-  }
-
-  /* GENERAL SIGNUP SECTION */
-  .signup-block{
-    margin-top:30px;
-    background:rgba(255,255,255,.6);
-    border:2px solid var(--orange);
-    padding:20px;
-    border-radius:16px;
-  }
-  .signup-block h2{
-    font-size:30px;
-    font-style:italic;
-    margin-bottom:10px;
-    color:var(--text);
-  }
-
-  .picklist{
-    max-height:260px;
-    overflow:auto;
-    border:1px solid var(--orange);
-    border-radius:12px;
-    padding:10px;
-    background:rgba(255,255,255,.4);
-    margin-bottom:14px;
-  }
-
-  .picklist label{
-    display:flex;align-items:center;
-    gap:10px;
-    padding:8px 6px;
-    border-bottom:1px solid rgba(0,0,0,.15);
-    color:var(--text);
-  }
-
-  .picklist input{
-    width:18px;height:18px;
-    accent-color:var(--orange);
-  }
-
-  .signup-row{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-  }
-
-  .signup-row input{
-    padding:10px 12px;
-    border-radius:9999px;
-    border:1px solid var(--orange);
-    color:var(--text);
-    width:260px;
-    background:white;
-  }
-
-  .signup-row button{
-    background:var(--orange);
-    color:white;
-    padding:10px 16px;
-    border:none;
-    border-radius:9999px;
-    font-weight:800;
-    cursor:pointer;
-  }
-
-  .saved-msg{
-    margin-top:10px;
-    color:#16a34a;
-    display:none;
-    font-weight:700;
-  }
+  .close-btn{ padding:8px 12px; background:#222; color:white; border:none; border-radius:9999px; font-weight:800; margin-left:auto; cursor:pointer; }
 </style>
 
 <script>
 function toggleMenu(){
   document.getElementById("menu").classList.toggle("show");
   document.getElementById("menuOverlay").classList.toggle("show");
+}
+
+/* ---------- DATA ---------- */
+const year=2026;
+const monthNames=["Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December"];
+const sundays={0:[4,11,18,25],1:[1,8,15,22],2:[1,8,15,22,29],3:[5,12,19,26],4:[3,10,17,24,31],5:[7,14,21,28],6:[5,12,19,26],7:[2,9,16,23,30],8:[6,13,20,27],9:[4,11,18,25],10:[1,8,15,22,29],11:[6,13,20,27]};
+// Start of the training plan weeks: set to 28 June 2026 (week 1 start)
+const startMonday=new Date(year,5,28);
+
+function pad(n){return String(n).padStart(2,"0")}
+function dateKey(y,m,d){return `${y}-${pad(m+1)}-${pad(d)}`}
+function weekIndexFor(date){const diff=(date-startMonday)/86400000; return diff<0?-1:Math.floor(diff/7)}
+
+/* TRAINING PLANS */
+const plan10k=[[4,4],[5,5],[5,6],[6,7],[6,8],[7,8],[7,9],[8,9],[8,10],[9,10],[9,11],[8,10]];
+const STRdesc=["1 min lopen / 1.5 min wandelen × 8","2 min lopen / 2 min wandelen × 6","3 min lopen / 2 min wandelen × 5","5 min lopen / 3 min wandelen × 4","7 min lopen / 3 min wandelen × 3","10 min lopen / 3 min wandelen × 2","15 min lopen / 2 min wandelen × 2","20–25 min lopen → 5 km"];
+const plan16k=[[5,6],[6,7],[6,8],[7,8],[8,9],[8,10],[9,10],[9,11],[10,11],[10,12],[11,12],[12,14]];
+const plan16kDesc=["Week 1: 5–6 km","Week 2: 6–7 km","Week 3: 6–8 km","Week 4: 7–8 km","Week 5: 8–9 km","Week 6: 8–10 km","Week 7: 9–10 km","Week 8: 9–11 km","Week 9: 10–11 km","Week 10: 10–12 km","Week 11: 11–12 km","Week 12: 12–14 km — Eindtest op 20 september (Ronse Run)"];
+
+/* SPECIAL EVENTS */
+const specialEvents = {};
+specialEvents[dateKey(2026,0,11)] = [{ title: "Bommels Run", desc: "Bommels run — gezellig en ontspannen (meet 09:00)", badge: "EVENT" }];
+specialEvents[dateKey(2026,0,25)] = [{ title: "Cadzand Marathon", desc: "Externe organisatie", badge: "EXT", external:true }];
+specialEvents[dateKey(2026,2,8)]  = [{ title: "Bashir Run", desc: "Externe organisatie", badge: "EXT", external:true }];
+specialEvents[dateKey(2026,3,26)] = [{ title: "Flandrien Run", desc: "Externe organisatie", badge: "EXT", external:true }];
+specialEvents[dateKey(2026,8,20)] = [{ title: "Ronse Run & roll", desc: "Externe organisatie", badge: "EXT", external:true }];
+
+/* ---------- CALENDAR ---------- */
+let currentMonth=0;
+
+function makeChip(text,isSocial,badgeText){
+  const d=document.createElement("div");
+  d.className="event";
+  const b=document.createElement("span");
+  b.className="badge";
+  b.textContent=badgeText || (isSocial?"SOCIAL":"SCHEMA");
+  d.appendChild(b);
+  d.append(" "+text);
+  return d;
+}
+
+function render(){
+  const grid=document.getElementById("grid");
+  grid.innerHTML="";
+  const first=new Date(year,currentMonth,1);
+  const last=new Date(year,currentMonth+1,0);
+  const mondayFirst=(first.getDay()+6)%7;
+  const total=mondayFirst+last.getDate();
+  const trailing=(7-(total%7))%7;
+  const cells=total+trailing;
+
+  for(let i=0;i<cells;i++){
+    const cell=document.createElement("div"); cell.className="day";
+    if(i>=mondayFirst && i<mondayFirst+last.getDate()){
+      const day=i-mondayFirst+1; const dt=new Date(year,currentMonth,day);
+      const num=document.createElement("div"); num.className="day-num"; num.textContent=day; cell.appendChild(num);
+
+      // Social Runs
+      const dtSocial = new Date(year, currentMonth, day);
+      const isWed = dtSocial>=new Date(2026,0,1) && dtSocial.getDay()===3;
+      if(sundays[currentMonth].includes(day) || isWed){
+        const txt=isWed?"Social Run — 5 km (19:30)":"Social Run — 5 km (09:00)";
+        cell.appendChild(makeChip(txt,true));
+      }
+
+      const thisKey=dateKey(year,currentMonth,day);
+      if(specialEvents[thisKey]) specialEvents[thisKey].forEach(ev=>{const chip=makeChip(ev.title,false,ev.badge||"EVENT"); if(ev.external) chip.classList.add('event--external'); cell.appendChild(chip); });
+
+      const idx=weekIndexFor(dt);
+      const dow=(dt.getDay()+6)%7;
+
+      if(document.getElementById("togglePlan10k").checked && idx>=0 && idx<plan10k.length && (dow===1||dow===3)){
+        const km=(dow===1)?plan10k[idx][0]:plan10k[idx][1];
+        cell.appendChild(makeChip(`10K W${idx+1}: ${km} km`,false));
+      }
+
+      if(document.getElementById("toggleSTR").checked && idx>=0 && idx<STRdesc.length && (dow===0||dow===2||dow===4)){
+        cell.appendChild(makeChip(`STR W${idx+1}`,false));
+      }
+
+      if(document.getElementById("togglePlan16k").checked && idx>=0 && idx<plan16k.length && (dow===1||dow===3)){
+        const km=(dow===1)?plan16k[idx][0]:plan16k[idx][1];
+        cell.appendChild(makeChip(`16K W${idx+1}: ${km} km`,false));
+      }
+
+      cell.onclick=()=>openDetail(dt);
+    }
+    grid.appendChild(cell);
+  }
+}
+
+function openDetail(dateObj){
+  const y=dateObj.getFullYear(),m=dateObj.getMonth(),d=dateObj.getDate();
+  const detailBody=document.getElementById("detailBody"); detailBody.innerHTML="";
+  document.getElementById("detailTitle").textContent=`${d} ${monthNames[m]} ${y}`;
+  const items=[];
+  const dtSocial=dateObj.getDay();
+  const idx=weekIndexFor(dateObj);
+  const dow=(dateObj.getDay()+6)%7;
+  const isWed=dateObj>=new Date(2026,0,1) && dateObj.getDay()===3;
+  const isSun=sundays[m].includes(d);
+
+  if(isWed||isSun) items.push({type:"social",title:"Social Club Run",desc:isWed?"5 km @ 7:00/km — Start 19:30":"5 km @ 7:00/km — Start 09:00"});
+
+  const thisKey=dateKey(y,m,d);
+  if(specialEvents[thisKey]) specialEvents[thisKey].forEach(ev=>items.push({type:ev.external?"external":"event",title:ev.title,desc:ev.desc}));
+
+  if(document.getElementById("togglePlan10k").checked && idx>=0 && idx<plan10k.length && (dow===1||dow===3))
+    items.push({type:"plan",title:`10 km — Week ${idx+1}`,desc:`${(dow===1)?plan10k[idx][0]:plan10k[idx][1]} km`});
+
+  if(document.getElementById("toggleSTR").checked && idx>=0 && idx<STRdesc.length && (dow===0||dow===2||dow===4))
+    items.push({type:"plan",title:`Start to Run — Week ${idx+1}`,desc:STRdesc[idx]});
+
+  if(document.getElementById("togglePlan16k").checked && idx>=0 && idx<plan16kDesc.length && (dow===1||dow===3))
+    items.push({type:"plan",title:`16 km — Week ${idx+1}`,desc:plan16kDesc[idx]});
+
+  if(items.length===0){const p=document.createElement("p");p.textContent="Geen items op deze dag."; p.style.opacity=".6"; detailBody.appendChild(p);}
+  else items.forEach(ev=>{const box=document.createElement("div"); box.className="item"; const tag=document.createElement("span"); let pillClass="pill-plan"; if(ev.type==="social") pillClass="pill-social"; else if(ev.type==="event") pillClass="pill-event"; else if(ev.type==="external") pillClass="pill-external"; tag.className="pill "+pillClass; tag.textContent=(ev.type==="social")?"SOCIAL":(ev.type==="external"?"EXTERN":"SCHEMA"); const h=document.createElement("h4"); h.textContent=ev.title; const p=document.createElement("p"); p.textContent=ev.desc; box.append(tag,h,p); detailBody.appendChild(box);});
+
+  document.getElementById("detailOverlay").classList.add("show");
+  document.getElementById("detail").classList.add("show");
+}
+
+function closeDetail(){ document.getElementById("detailOverlay").classList.remove("show"); document.getElementById("detail").classList.remove("show"); }
+
+/* ---------- INIT ---------- */
+window.onload=function(){
+  const monthBar=document.getElementById("monthBar");
+  monthNames.forEach((m,i)=>{const b=document.createElement("button");b.className="month-btn"+(i===0?" active":"");b.textContent=m; b.onclick=()=>{currentMonth=i;[...monthBar.children].forEach((b,j)=>b.classList.toggle("active",i===j)); render();}; monthBar.appendChild(b);});
+  render();
 }
 </script>
 </head>
@@ -392,7 +363,7 @@ function toggleMenu(){
   <div class="menu-logo"><img src="Logo.png"></div>
   <a href="index.html">Home</a>
   <a href="over.html">Over ons</a>
-  <a href="events.html">Events</a>
+  <a href="events.html">Kalender</a>
   <a href="schema.html">Schema</a>
   <a href="Shop.html">Shop</a>
   <a href="info.html">Info</a>
@@ -410,6 +381,7 @@ function toggleMenu(){
   <div class="toggles">
     <label><input type="checkbox" id="togglePlan10k" onchange="render()"> Toon schema 10 km (12 weken)</label>
     <label><input type="checkbox" id="toggleSTR" onchange="render()"> Toon Start to Run (8 weken)</label>
+    <label><input type="checkbox" id="togglePlan16k" onchange="render()"> Toon schema 16 km (12 weken)</label>
   </div>
 
   <section class="calendar">
@@ -419,274 +391,24 @@ function toggleMenu(){
     </div>
     <div id="grid" class="cal-grid"></div>
   </section>
-
-  <!-- Signup removed: calendar and events remain -->
+  
 </div>
 
 <!-- DETAIL PANEL -->
 <div id="detailOverlay" class="detail-overlay" onclick="closeDetail()"></div>
 <aside id="detail" class="detail">
-
   <header>
     <h3 id="detailTitle"></h3>
     <div class="sub">Dagoverzicht</div>
   </header>
-
   <div id="detailBody" class="body"></div>
-
   <footer>
     <a href="schema.html#str" class="link-btn">Schema Start to Run</a>
     <a href="schema.html#10k" class="link-btn">Schema 10 km</a>
-
-    <!-- Signup controls removed from detail footer -->
-
+    <a href="schema.html#16k" class="link-btn">Schema 16 km</a>
     <button class="close-btn" onclick="closeDetail()">Sluiten</button>
   </footer>
-
 </aside>
-
-<script>
-/* ---------- DATA ---------- */
-const year=2026;
-const monthNames=["Januari","Februari","Maart","April","Mei","Juni","Juli",
-"Augustus","September","Oktober","November","December"];
-
-const sundays={
-  0:[4,11,18,25],1:[1,8,15,22],2:[1,8,15,22,29],3:[5,12,19,26],
-  4:[3,10,17,24,31],5:[7,14,21,28],6:[5,12,19,26],
-  7:[2,9,16,23,30],8:[6,13,20,27],9:[4,11,18,25],
-  10:[1,8,15,22,29],11:[6,13,20,27]
-};
-
-const startMonday=new Date(year,0,5);
-
-const plan10k=[[4,4],[5,5],[5,6],[6,7],[6,8],[7,8],[7,9],[8,9],[8,10],[9,10],[9,11],[8,10]];
-
-const STRdesc=[
-  "1 min lopen / 1.5 min wandelen × 8",
-  "2 min lopen / 2 min wandelen × 6",
-  "3 min lopen / 2 min wandelen × 5",
-  "5 min lopen / 3 min wandelen × 4",
-  "7 min lopen / 3 min wandelen × 3",
-  "10 min lopen / 3 min wandelen × 2",
-  "15 min lopen / 2 min wandelen × 2",
-  "20–25 min lopen → 5 km"
-];
-
-/* ---------- SPECIAL EVENTS ---------- */
-const specialEvents = {};
-// Keys use the same dateKey(y,m,d) format. Add events for January 2026:
-specialEvents[dateKey(2026,0,11)] = [{ title: "Bommels Run", desc: "Bommels run — gezellig en ontspannen (meet 09:00)", badge: "EVENT" }];
-
-// External events (subtle/less-noticeable)
-specialEvents[dateKey(2026,0,25)] = [{ title: "Cadzand Marathon", desc: "Cadzand Marathon — externe organisatie", badge: "EXT", external: true }];
-specialEvents[dateKey(2026,2,8)]  = [{ title: "Bashir Run", desc: "Bashir Run — externe organisatie", badge: "EXT", external: true }];
-specialEvents[dateKey(2026,3,26)] = [{ title: "Flandrien Run", desc: "Flandrien Run — externe organisatie", badge: "EXT", external: true }];
-specialEvents[dateKey(2026,9,20)] = [{ title: "Ronse Run & Roll", desc: "Ronse Run — externe organisatie", badge: "EXT", external: true }];
-
-function pad(n){return String(n).padStart(2,"0")}
-function dateKey(y,m,d){return `${y}-${pad(m+1)}-${pad(d)}`}
-
-function weekIndexFor(date){
-  const diff=(date-startMonday)/86400000;
-  return diff<0?-1:Math.floor(diff/7);
-}
-
-/* ---------- MONTH BUTTONS ---------- */
-let currentMonth=0;
-const monthBar=document.getElementById("monthBar");
-
-monthNames.forEach((m,i)=>{
-  const b=document.createElement("button");
-  b.className="month-btn"+(i===0?" active":"");
-  b.textContent=m;
-  b.onclick=()=>{currentMonth=i;updateActive();render()};
-  monthBar.appendChild(b);
-});
-function updateActive(){
-  [...monthBar.children].forEach((b,i)=>b.classList.toggle("active",i===currentMonth));
-}
-
-/* ---------- CALENDAR RENDER ---------- */
-function render(){
-  const grid=document.getElementById("grid");
-  grid.innerHTML="";
-
-  const first=new Date(year,currentMonth,1);
-  const last=new Date(year,currentMonth+1,0);
-  const mondayFirst=(first.getDay()+6)%7;
-
-  const total=mondayFirst+last.getDate();
-  const trailing=(7-(total%7))%7;
-  const cells=total+trailing;
-
-  for(let i=0;i<cells;i++){
-    const cell=document.createElement("div");
-    cell.className="day";
-
-    if(i>=mondayFirst && i<mondayFirst+last.getDate()){
-      const day=i-mondayFirst+1;
-      const dt=new Date(year,currentMonth,day);
-
-      const num=document.createElement("div");
-      num.className="day-num";
-      num.textContent=day;
-      cell.appendChild(num);
-
-      /* SOCIAL RUNS (Sundays + Wednesdays from 01/01/2026) */
-      const dtSocial = new Date(year, currentMonth, day);
-      const isWednesdaySocial = dtSocial >= new Date(2026,0,1) && dtSocial.getDay()===3; // 3 = Wed
-      if(sundays[currentMonth].includes(day) || isWednesdaySocial){
-        const socialText = isWednesdaySocial ? "Social Run — 5 km (19:30)" : "Social Run — 5 km (09:00)";
-        cell.appendChild(makeChip(socialText,true));
-      }
-
-      const thisKey = dateKey(year, currentMonth, day);
-      if(specialEvents[thisKey]){
-        specialEvents[thisKey].forEach(ev => {
-          const chip = makeChip(ev.title, false, ev.badge || "EVENT");
-          if(ev.external) chip.classList.add('event--external');
-          cell.appendChild(chip);
-        });
-      }
-
-      /* SCHEMAS */
-      const idx=weekIndexFor(dt);
-      const dow=(dt.getDay()+6)%7;
-
-      if(document.getElementById("togglePlan10k").checked && idx>=0 && idx<plan10k.length && (dow===1||dow===3)){
-        const km=(dow===1)?plan10k[idx][0]:plan10k[idx][1];
-        cell.appendChild(makeChip(`10K W${idx+1}: ${km} km`,false));
-      }
-
-      if(document.getElementById("toggleSTR").checked && idx>=0 && idx<STRdesc.length && (dow===0||dow===2||dow===4)){
-        cell.appendChild(makeChip(`STR W${idx+1}`,false));
-      }
-
-      cell.onclick=()=>openDetail(dt);
-    }
-
-    grid.appendChild(cell);
-  }
-}
-
-function makeChip(text,isSocial,badgeText){
-  const d=document.createElement("div");
-  d.className="event";
-  const b=document.createElement("span");
-  b.className="badge";
-  b.textContent = badgeText || (isSocial?"SOCIAL":"SCHEMA");
-  d.appendChild(b);
-  d.append(" "+text);
-  return d;
-}
-
-/* ---------- DETAIL PANEL ---------- */
-let currentDetailKey=null;
-
-function resetDetailFooter(){
-  // signup UI removed; no footer reset required
-}
-
-function openDetail(dateObj){
-  const y=dateObj.getFullYear(),m=dateObj.getMonth(),d=dateObj.getDate();
-  currentDetailKey=dateKey(y,m,d);
-
-  resetDetailFooter();
-
-  document.getElementById("detailTitle").textContent=
-    `${d} ${monthNames[m]} ${y}`;
-
-  const body=document.getElementById("detailBody");
-  body.innerHTML="";
-
-  const dateKeyObj = new Date(y,m,d);
-  const isWednesdaySocial = dateKeyObj >= new Date(2026,0,1) && dateKeyObj.getDay()===3;
-  const isSunday=sundays[m].includes(d);
-  const isSocial = isSunday || isWednesdaySocial;
-  const idx=weekIndexFor(dateObj);
-  const dow=(dateObj.getDay()+6)%7;
-
-  const items=[];
-
-  if(isSocial){
-    items.push({
-      type:"social",
-      title:"Social Club Run",
-      desc: isWednesdaySocial ? "5 km @ 7:00/km — Start 19:30" : "5 km @ 7:00/km — Start 09:00"
-    });
-  }
-
-  // include any special events for this date
-  const special = specialEvents[currentDetailKey];
-  if(special){
-    special.forEach(ev=> items.push({ type: ev.external?"external":"event", title: ev.title, desc: ev.desc }));
-  }
-
-  if(document.getElementById("togglePlan10k").checked && idx>=0 && idx<plan10k.length && (dow===1||dow===3)){
-    const km=(dow===1)?plan10k[idx][0]:plan10k[idx][1];
-    items.push({type:"plan",title:`10 km — Week ${idx+1}`,desc:`${km} km rustig`});
-  }
-
-  if(document.getElementById("toggleSTR").checked && idx>=0 && idx<STRdesc.length && (dow===0||dow===2||dow===4)){
-    items.push({type:"plan",title:`Start to Run — Week ${idx+1}`,desc:STRdesc[idx]});
-  }
-
-  if(items.length===0){
-    const p=document.createElement("p");
-    p.textContent="Geen items op deze dag.";
-    p.style.opacity=".6";
-    body.appendChild(p);
-  }
-  else{
-    items.forEach(ev=>{
-      const box=document.createElement("div");
-      box.className="item";
-
-      const tag=document.createElement("span");
-      let pillClass = "pill-plan";
-      let pillLabel = "SCHEMA";
-      if(ev.type==="social"){ pillClass = "pill-social"; pillLabel = "SOCIAL"; }
-      else if(ev.type==="event"){ pillClass = "pill-event"; pillLabel = "EVENT"; }
-      else if(ev.type==="external"){ pillClass = "pill-external"; pillLabel = "EXTERN"; }
-      tag.className = "pill " + pillClass;
-      tag.textContent = pillLabel;
-
-      const h=document.createElement("h4");
-      h.textContent=ev.title;
-
-      const p=document.createElement("p");
-      p.textContent=ev.desc;
-
-      box.append(tag,h,p);
-      body.appendChild(box);
-    });
-  }
-
-  // signup action removed
-
-  document.getElementById("detailOverlay").classList.add("show");
-  document.getElementById("detail").classList.add("show");
-}
-
-/* ---------- CLOSE DETAIL ---------- */
-function closeDetail(){
-  document.getElementById("detailOverlay").classList.remove("show");
-  document.getElementById("detail").classList.remove("show");
-  resetDetailFooter();
-}
-
-/* ---------- SIGNUP (DETAIL PANEL) ---------- */
-// Signup-related functions removed per request.
-
-/* ---------- INIT ---------- */
-render();
-</script>
 
 </body>
 </html>
-
-
-
-
-
