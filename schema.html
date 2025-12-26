@@ -145,6 +145,7 @@ function toggleMenu(){
 function showSchema(id){
   document.getElementById("schema1").style.display="none";
   document.getElementById("schema2").style.display="none";
+  document.getElementById("schema3").style.display="none";
   document.getElementById(id).style.display="block";
 }
 </script>
@@ -177,6 +178,7 @@ function showSchema(id){
   <div>
     <button class="btn" onclick="showSchema('schema1')">Start to Run — 8 weken — 5 km</button>
     <button class="btn" onclick="showSchema('schema2')">10 km Schema — 12 weken</button>
+    <button class="btn" onclick="showSchema('schema3')">16 km Schema — 12 weken</button>
   </div>
 
   <!-- START TO RUN — 8 WEKEN -->
@@ -189,49 +191,42 @@ function showSchema(id){
       <p>Training 2: 2 min lopen + 2 min wandelen × 7</p>
       <p>Training 3: 3 min lopen + 2 min wandelen × 5</p>
     </div>
-
     <div class="week-block">
       <h3>Week 2</h3>
       <p>Training 1: 4 min lopen + 2 min wandelen × 5</p>
       <p>Training 2: 5 min lopen + 2 min wandelen × 4</p>
       <p>Training 3: 6 min lopen + 2 min wandelen × 3</p>
     </div>
-
     <div class="week-block">
       <h3>Week 3</h3>
       <p>Training 1: 8 min lopen + 2 min wandelen × 3</p>
       <p>Training 2: 10 min lopen + 2 min wandelen × 2</p>
       <p>Training 3: 12 min lopen + 2 min wandelen × 2</p>
     </div>
-
     <div class="week-block">
       <h3>Week 4</h3>
       <p>Training 1: 15 min lopen + 2 min wandelen × 2</p>
       <p>Training 2: 18 min lopen + 2 min wandelen × 1</p>
       <p>Training 3: 20 min lopen (zonder wandelen)</p>
     </div>
-
     <div class="week-block">
       <h3>Week 5</h3>
       <p>Training 1: 22 min lopen</p>
       <p>Training 2: 25 min lopen</p>
       <p>Training 3: 28 min lopen</p>
     </div>
-
     <div class="week-block">
       <h3>Week 6</h3>
       <p>Training 1: 30 min lopen</p>
       <p>Training 2: 32 min lopen</p>
       <p>Training 3: 34 min lopen</p>
     </div>
-
     <div class="week-block">
       <h3>Week 7</h3>
       <p>Training 1: 35 min lopen</p>
       <p>Training 2: 30 min lopen (rustig tempo)</p>
       <p>Training 3: 36 min lopen</p>
     </div>
-
     <div class="week-block">
       <h3>Week 8</h3>
       <p>Training 1: 20 min rustig lopen</p>
@@ -253,7 +248,6 @@ function showSchema(id){
   <div id="schema2" class="schema-block">
     <h2>🗓️ 10 km opbouwschema — 12 weken — 3 trainingen per week</h2>
 
-    <p><strong>Structuur per week:</strong></p>
     <div class="week-block">
       <p><strong>Training 1 (dinsdag/woensdag):</strong> Duurloop-opbouw</p>
       <p><strong>Training 2 (vrijdag/zaterdag):</strong> Tempoloop / interval</p>
@@ -266,33 +260,68 @@ function showSchema(id){
       <p><strong>T2:</strong> 4 × 3 min @ 6:45/km + 2 min herstel</p>
       <p><strong>T3:</strong> 5 km samen</p>
     </div>
-
     <div class="week-block">
       <h3>Weken 5–8 — Afstand vergroten</h3>
       <p><strong>T1:</strong> 9 km → 9 km → 10 km → 10 km</p>
       <p><strong>T2:</strong> 5 × 4 min @ 6:45/km + 2 min herstel</p>
       <p><strong>T3:</strong> 5 km samen</p>
     </div>
-
     <div class="week-block">
       <h3>Weken 9–12 — Doel & testloop</h3>
-      <p><strong>T1:</strong> 10 km → 10 km → 11 km → 12 km  
-      <br>(Week 12 = testloop 10 km)</p>
+      <p><strong>T1:</strong> 10 km → 10 km → 11 km → 12 km (Week 12 = testloop 10 km)</p>
       <p><strong>T2:</strong> 6 × 5 min @ 6:45/km + 2 min herstel</p>
       <p><strong>T3:</strong> 5 km samen</p>
     </div>
 
     <div class="tips">
-      <h3>🔑 Belangrijke tips</h3>
+      <h3>🔑 Tips voor succes</h3>
       <p><strong>Tempo:</strong> duurlopen 7:00–7:15/km, intervallen ±6:45/km.</p>
       <p><strong>Rust:</strong> minstens 1 dag rust na lange duurloop.</p>
       <p><strong>Progressie:</strong> te zwaar? Week herhalen.</p>
       <p><strong>Testloop:</strong> plan je 10 km in week 12.</p>
     </div>
   </div>
+
+  <!-- 16 KM — 12 WEKEN -->
+  <div id="schema3" class="schema-block">
+    <h2>🗓️ 16 km opbouwschema — 12 weken — 3 trainingen per week</h2>
+
+    <div class="week-block">
+      <p><strong>Training 1 (dinsdag/woensdag):</strong> Duurloop-opbouw</p>
+      <p><strong>Training 2 (vrijdag/zaterdag):</strong> Tempoloop / interval</p>
+      <p><strong>Training 3 (zondag):</strong> Sociale 6–8 km groepsloop / rustig</p>
+    </div>
+
+    <div class="week-block">
+      <h3>Weken 1–4 — Basisopbouw</h3>
+      <p><strong>T1:</strong> 8 km → 9 km → 10 km → 10 km</p>
+      <p><strong>T2:</strong> 4 × 3 min @6:45/km → 4 × 4 min → 5 × 3 min → 5 × 4 min</p>
+      <p><strong>T3:</strong> 6 km samen</p>
+    </div>
+    <div class="week-block">
+      <h3>Weken 5–8 — Afstand en tempo vergroten</h3>
+      <p><strong>T1:</strong> 11 km → 12 km → 12 km → 13 km</p>
+      <p><strong>T2:</strong> 6 × 4 min @6:45/km → 6 × 5 min → 7 × 4 min → 7 × 5 min</p>
+      <p><strong>T3:</strong> 7 km samen</p>
+    </div>
+    <div class="week-block">
+      <h3>Weken 9–12 — Doelafstand & testloop</h3>
+      <p><strong>T1:</strong> 13 km → 14 km → 15 km → 10 km rustig (Week 12 = 16 km testloop)</p>
+      <p><strong>T2:</strong> 8 × 4 min @6:45/km → 8 × 5 min → 6 × 5 min @6:40 → 4 × 3 min</p>
+      <p><strong>T3:</strong> 7 km → 7 km → 8 km → 16 km testloop</p>
+    </div>
+
+    <div class="tips">
+      <h3>🔑 Tips voor succes</h3>
+      <p><strong>Progressie:</strong> Duurlopen maximaal 1–2 km per week verhogen. Intervallen opbouwen in herhalingen of duur, niet beide tegelijk.</p>
+      <p><strong>Tempo:</strong> Duurlopen 7:00–7:15/km, intervallen 6:40–6:45/km, sociale loop praattempo.</p>
+      <p><strong>Rust:</strong> Minstens 1 volledige rustdag na lange duurlopen.</p>
+      <p><strong>Taper:</strong> Week 12 testloop: kortere duurlopen/intervallen zorgen dat je fris aan de start staat.</p>
+      <p><strong>Optioneel:</strong> Korte versnellingen (20–30 sec) aan het eind van T1 voor loopkracht.</p>
+    </div>
+  </div>
+
 </div>
 
 </body>
 </html>
-
-
