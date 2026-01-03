@@ -232,11 +232,7 @@ function pad(n){return String(n).padStart(2,"0")}
 function dateKey(y,m,d){return `${y}-${pad(m+1)}-${pad(d)}`}
 function weekIndexFor(date){const diff=(date-startMonday)/86400000; return diff<0?-1:Math.floor(diff/7)}
 
-/* TRAINING PLANS */
-const plan10k=[[4,4],[5,5],[5,6],[6,7],[6,8],[7,8],[7,9],[8,9],[8,10],[9,10],[9,11],[8,10]];
-const STRdesc=["1 min lopen / 1.5 min wandelen × 8","2 min lopen / 2 min wandelen × 6","3 min lopen / 2 min wandelen × 5","5 min lopen / 3 min wandelen × 4","7 min lopen / 3 min wandelen × 3","10 min lopen / 3 min wandelen × 2","15 min lopen / 2 min wandelen × 2","20–25 min lopen → 5 km"];
-const plan16k=[[5,6],[6,7],[6,8],[7,8],[8,9],[8,10],[9,10],[9,11],[10,11],[10,12],[11,12],[12,14]];
-const plan16kDesc=["Week 1: 5–6 km","Week 2: 6–7 km","Week 3: 6–8 km","Week 4: 7–8 km","Week 5: 8–9 km","Week 6: 8–10 km","Week 7: 9–10 km","Week 8: 9–11 km","Week 9: 10–11 km","Week 10: 10–12 km","Week 11: 11–12 km","Week 12: 12–14 km — Eindtest op 20 september (Ronse Run)"];
+/* TRAINING PLANS removed from calendar display */
 
 /* SPECIAL EVENTS */
 const specialEvents = {};
@@ -244,7 +240,7 @@ specialEvents[dateKey(2026,0,11)] = [{ title: "Bommels Run", desc: "Bommels run 
 specialEvents[dateKey(2026,0,25)] = [{ title: "Cadzand Marathon", desc: "Externe organisatie", badge: "EXT", external:true }];
 specialEvents[dateKey(2026,2,8)]  = [{ title: "Bashir Run", desc: "Externe organisatie", badge: "EXT", external:true }];
 specialEvents[dateKey(2026,3,26)] = [{ title: "Flandrien Run", desc: "Externe organisatie", badge: "EXT", external:true }];
-specialEvents[dateKey(2026,8,20)] = [{ title: "Ronse Run & Roll", desc: "Externe organisatie", badge: "EXT", external:true }];
+specialEvents[dateKey(2026,8,20)] = [{ title: "Ronse Run & roll", desc: "Externe organisatie", badge: "EXT", external:true }];
 
 /* ---------- CALENDAR ---------- */
 let currentMonth=0;
@@ -290,19 +286,7 @@ function render(){
       const idx=weekIndexFor(dt);
       const dow=(dt.getDay()+6)%7;
 
-      if(document.getElementById("togglePlan10k").checked && idx>=0 && idx<plan10k.length && (dow===1||dow===3)){
-        const km=(dow===1)?plan10k[idx][0]:plan10k[idx][1];
-        cell.appendChild(makeChip(`10K W${idx+1}: ${km} km`,false));
-      }
-
-      if(document.getElementById("toggleSTR").checked && idx>=0 && idx<STRdesc.length && (dow===0||dow===2||dow===4)){
-        cell.appendChild(makeChip(`STR W${idx+1}`,false));
-      }
-
-      if(document.getElementById("togglePlan16k").checked && idx>=0 && idx<plan16k.length && (dow===1||dow===3)){
-        const km=(dow===1)?plan16k[idx][0]:plan16k[idx][1];
-        cell.appendChild(makeChip(`16K W${idx+1}: ${km} km`,false));
-      }
+      // Training-plan (schema) chips removed from calendar
 
       cell.onclick=()=>openDetail(dt);
     }
@@ -326,14 +310,7 @@ function openDetail(dateObj){
   const thisKey=dateKey(y,m,d);
   if(specialEvents[thisKey]) specialEvents[thisKey].forEach(ev=>items.push({type:ev.external?"external":"event",title:ev.title,desc:ev.desc}));
 
-  if(document.getElementById("togglePlan10k").checked && idx>=0 && idx<plan10k.length && (dow===1||dow===3))
-    items.push({type:"plan",title:`10 km — Week ${idx+1}`,desc:`${(dow===1)?plan10k[idx][0]:plan10k[idx][1]} km`});
-
-  if(document.getElementById("toggleSTR").checked && idx>=0 && idx<STRdesc.length && (dow===0||dow===2||dow===4))
-    items.push({type:"plan",title:`Start to Run — Week ${idx+1}`,desc:STRdesc[idx]});
-
-  if(document.getElementById("togglePlan16k").checked && idx>=0 && idx<plan16kDesc.length && (dow===1||dow===3))
-    items.push({type:"plan",title:`16 km — Week ${idx+1}`,desc:plan16kDesc[idx]});
+  // Training-plan (schema) detail items removed
 
   if(items.length===0){const p=document.createElement("p");p.textContent="Geen items op deze dag."; p.style.opacity=".6"; detailBody.appendChild(p);}
   else items.forEach(ev=>{const box=document.createElement("div"); box.className="item"; const tag=document.createElement("span"); let pillClass="pill-plan"; if(ev.type==="social") pillClass="pill-social"; else if(ev.type==="event") pillClass="pill-event"; else if(ev.type==="external") pillClass="pill-external"; tag.className="pill "+pillClass; tag.textContent=(ev.type==="social")?"SOCIAL":(ev.type==="external"?"EXTERN":"SCHEMA"); const h=document.createElement("h4"); h.textContent=ev.title; const p=document.createElement("p"); p.textContent=ev.desc; box.append(tag,h,p); detailBody.appendChild(box);});
@@ -378,11 +355,7 @@ window.onload=function(){
 
   <div id="monthBar" class="month-bar"></div>
 
-  <div class="toggles">
-    <label><input type="checkbox" id="togglePlan10k" onchange="render()"> Toon schema 10 km (12 weken)</label>
-    <label><input type="checkbox" id="toggleSTR" onchange="render()"> Toon Start to Run (8 weken)</label>
-    <label><input type="checkbox" id="togglePlan16k" onchange="render()"> Toon schema 16 km (12 weken)</label>
-  </div>
+  <!-- Schema toggles removed -->
 
   <section class="calendar">
     <div class="cal-header">
@@ -403,13 +376,33 @@ window.onload=function(){
   </header>
   <div id="detailBody" class="body"></div>
   <footer>
-    <a href="schema.html#str" class="link-btn">Schema Start to Run</a>
-    <a href="schema.html#10k" class="link-btn">Schema 10 km</a>
-    <a href="schema.html#16k" class="link-btn">Schema 16 km</a>
     <button class="close-btn" onclick="closeDetail()">Sluiten</button>
   </footer>
 </aside>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Event",
+      "name": "Start to Run",
+      "startDate": "2026-02-02",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "description": "Start to Run course organized by RNX Run Club."
+    },
+    {
+      "@type": "Event",
+      "name": "Start to Run — 10 km",
+      "startDate": "2026-02-02",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "description": "Start to Run 10 km session organized by RNX Run Club."
+    }
+  ]
+}
+</script>
+
 </body>
 </html>
-
